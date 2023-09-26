@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1a1a1a;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.NicknameController">
+    <VBox layoutX="250.0" layoutY="150.0" spacing="10.0">
+        <Label text="NICKNAME" style="-fx-text-fill: #007acc; -fx-font-size: 18px;" />
+        <TextField fx:id="nicknameTextField" promptText="Ingresa tu nickname" style="-fx-prompt-text-fill: #007acc;" />
+        <Button text="ENTRAR" style="-fx-background-color: #0053a0; -fx-text-fill: white;" />
+    </VBox>
+</AnchorPane>
