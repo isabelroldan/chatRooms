@@ -4,12 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1a1a1a;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.NicknameController">
-    <VBox layoutX="250.0" layoutY="150.0" spacing="10.0">
-        <Label text="NICKNAME" style="-fx-text-fill: #007acc; -fx-font-size: 18px;" />
-        <TextField fx:id="nicknameTextField" promptText="Ingresa tu nickname" style="-fx-prompt-text-fill: #007acc;" />
-        <Button text="ENTRAR" style="-fx-background-color: #0053a0; -fx-text-fill: white;" />
-    </VBox>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1b6170;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.NicknameController">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ecf0f3" height="227.0" layoutX="130.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="340.0" />
+     <TextField fx:id="nicknameTextField" layoutX="161.0" layoutY="187.0" prefHeight="26.0" prefWidth="277.0" promptText="Ingresa tu nickname" style="-fx-prompt-text-fill: #030303;" />
+     <Button layoutX="267.0" layoutY="257.0" style="-fx-background-color: #2da2bd; -fx-text-fill: #030303;" text="ENTRAR" />
+     <Label layoutX="254.0" layoutY="110.0" style="-fx-text-fill: #030303; -fx-font-size: 18px;" text="NICKNAME" />
 </AnchorPane>
