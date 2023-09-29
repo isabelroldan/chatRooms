@@ -3,12 +3,12 @@ package iesfranciscodelosrios.acd.server;
 import java.io.*;
 import java.net.Socket;
 
-public class UserHandler extends Thread {
+public class ClientHandler extends Thread {
     private Socket userSocket;
     private ChatServer server;
     private PrintWriter out;
 
-    public UserHandler(Socket userSocket, ChatServer server) {
+    public ClientHandler(Socket userSocket, ChatServer server) {
         this.userSocket = userSocket;
         this.server = server;
 

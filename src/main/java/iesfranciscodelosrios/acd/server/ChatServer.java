@@ -6,7 +6,7 @@ import java.util.*;
 
 public class ChatServer {
     private Set<String> connectedNicknames = new HashSet<>();
-    private List<UserHandler> userHandlers = new ArrayList<>();
+    private List<ClientHandler> clientHandlers = new ArrayList<>();
 
     String serverIp = "172.16.16.176"; // Dirección IP del servidor
     int serverPort = 8081; // Puerto del servidor
@@ -22,9 +22,9 @@ public class ChatServer {
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (UserHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
                 // Esto permite manejar múltiples clientes simultáneamente.
-                UserHandler userHandler = new UserHandler(clientSocket, this);
-                userHandlers.add(userHandler);
-                userHandler.start();
+                ClientHandler clientHandler = new ClientHandler(clientSocket, this);
+                clientHandlers.add(clientHandler);
+                clientHandler.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,14 +48,14 @@ public class ChatServer {
 
     // Agrega un método para enviar un mensaje a todos los usuarios conectados
     public synchronized void broadcastMessage(String message) {
-        for (UserHandler userHandler : userHandlers) {
-            userHandler.sendMessage(message);
+        for (ClientHandler clientHandler : clientHandlers) {
+            clientHandler.sendMessage(message);
         }
     }
 
     // Agrega un método para eliminar un usuario de la lista de usuarios conectados
-    public synchronized void removeUser(UserHandler userHandler) {
-        userHandlers.remove(userHandler);
+    public synchronized void removeUser(ClientHandler clientHandler) {
+        clientHandlers.remove(clientHandler);
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package iesfranciscodelosrios.acd;
+package iesfranciscodelosrios.acd.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
