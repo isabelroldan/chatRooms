@@ -50,7 +50,7 @@ public class ClientHandler extends Thread {
             try {
                 userSocket.close(); // Se cierra el socket del cliente
                 // Eliminar el usuario de la lista de usuarios conectados en el servidor
-                server.removeUser(this);
+                server.removeClient(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }

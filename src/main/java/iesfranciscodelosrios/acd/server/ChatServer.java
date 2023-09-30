@@ -9,6 +9,9 @@ public class ChatServer {
      * Un conjunto (Set) que almacena los nombres de usuario conectados. Utiliza un conjunto para garantizar que no haya nombres duplicados.
      */
     private Set<String> connectedNicknames = new HashSet<>();
+    /**
+     * Una lista (List) que almacena instancias de la clase ClientHandler. Cada instancia manejará la comunicación con un usuario cliente.
+     */
     private List<ClientHandler> clientHandlers = new ArrayList<>();
 
     /**
@@ -28,12 +31,21 @@ public class ChatServer {
             // Aceptar conexiones entrantes en un bucle infinito
             while (true) { //Entra en un bucle infinito para aceptar conexiones entrantes de clientes.
                 Socket clientSocket = serverSocket.accept();
-                // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (UserHandler)
+                // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (ClientHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
                 // Esto permite manejar múltiples clientes simultáneamente.
+                //Es decir, Por cada nueva conexión, crea una instancia de ClientHandler, pasa el socket del cliente
+                // y una referencia al servidor a esta instancia, y la inicia. Esto permite que múltiples clientes se conecten y se comuniquen simultáneamente.
                 ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                 clientHandlers.add(clientHandler);
                 clientHandler.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Agrega un método para verificar si un nickname está en uso
     public synchronized boolean isNicknameAvailable(String nickname) {
         return !connectedNicknames.contains(nickname);
     }
@@ -56,7 +68,7 @@ public class ChatServer {
     }
 
     // Agrega un método para eliminar un usuario de la lista de usuarios conectados
-    public synchronized void removeUser(ClientHandler clientHandler) {
+    public synchronized void removeClient(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
     }
 
