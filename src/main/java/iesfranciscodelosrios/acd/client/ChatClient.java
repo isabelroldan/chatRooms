@@ -1,9 +1,9 @@
-package iesfranciscodelosrios.acd.user;
+package iesfranciscodelosrios.acd.client;
 
 import java.io.*;
 import java.net.*;
 
-public class User {
+public class ChatClient {
     public static void main(String[] args) {
         try {
             //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente

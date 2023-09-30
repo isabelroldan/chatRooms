@@ -3,10 +3,7 @@ package iesfranciscodelosrios.acd.server;
 import java.io.*;
 import java.net.Socket;
 
-public class UserHandler extends Thread {
-    /**
-     * Representa el socket de comunicación con el cliente. El servidor utiliza este socket para recibir y enviar mensajes al cliente.
-     */
+public class ClientHandler extends Thread {
     private Socket userSocket;
     /**
      * Es una referencia al servidor de chat al que está conectado este cliente. Permite que el UserHandler se comunique con otros clientes a través del servidor.
@@ -17,7 +14,7 @@ public class UserHandler extends Thread {
      */
     private PrintWriter out;
 
-    public UserHandler(Socket userSocket, ChatServer server) {
+    public ClientHandler(Socket userSocket, ChatServer server) {
         this.userSocket = userSocket;
         this.server = server;
 

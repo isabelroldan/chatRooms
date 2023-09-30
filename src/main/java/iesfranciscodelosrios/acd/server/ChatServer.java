@@ -9,10 +9,7 @@ public class ChatServer {
      * Un conjunto (Set) que almacena los nombres de usuario conectados. Utiliza un conjunto para garantizar que no haya nombres duplicados.
      */
     private Set<String> connectedNicknames = new HashSet<>();
-    /**
-     * Una lista (List) que almacena instancias de la clase UserHandler. Cada instancia manejará la comunicación con un usuario cliente.
-     */
-    private List<UserHandler> userHandlers = new ArrayList<>();
+    private List<ClientHandler> clientHandlers = new ArrayList<>();
 
     /**
      * La dirección IP del servidor.
@@ -34,18 +31,9 @@ public class ChatServer {
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (UserHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
                 // Esto permite manejar múltiples clientes simultáneamente.
-                //Es decir, Por cada nueva conexión, crea una instancia de UserHandler, pasa el socket del cliente
-                // y una referencia al servidor a esta instancia, y la inicia. Esto permite que múltiples clientes se conecten y se comuniquen simultáneamente.
-                UserHandler userHandler = new UserHandler(clientSocket, this);
-                userHandlers.add(userHandler);
-                userHandler.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Agrega un método para verificar si un nickname está en uso
+                ClientHandler clientHandler = new ClientHandler(clientSocket, this);
+                clientHandlers.add(clientHandler);
+                clientHandler.start();
     public synchronized boolean isNicknameAvailable(String nickname) {
         return !connectedNicknames.contains(nickname);
     }
@@ -62,14 +50,14 @@ public class ChatServer {
 
     // Agrega un método para enviar un mensaje a todos los usuarios conectados
     public synchronized void broadcastMessage(String message) {
-        for (UserHandler userHandler : userHandlers) {
-            userHandler.sendMessage(message);
+        for (ClientHandler clientHandler : clientHandlers) {
+            clientHandler.sendMessage(message);
         }
     }
 
     // Agrega un método para eliminar un usuario de la lista de usuarios conectados
-    public synchronized void removeUser(UserHandler userHandler) {
-        userHandlers.remove(userHandler);
+    public synchronized void removeUser(ClientHandler clientHandler) {
+        clientHandlers.remove(clientHandler);
     }
 
     /**

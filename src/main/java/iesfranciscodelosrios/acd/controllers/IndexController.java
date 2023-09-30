@@ -1,10 +1,10 @@
-package iesfranciscodelosrios.acd;
+package iesfranciscodelosrios.acd.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class NicknameController {
+public class IndexController {
 
     @FXML
     private TextField nicknameTextField;

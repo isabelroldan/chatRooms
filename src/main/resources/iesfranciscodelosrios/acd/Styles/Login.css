@@ -1,0 +1,8 @@
+#background{
+    -fx-background-color: #1b6170;
+}
+#button{
+    -fx-background-color: #2da2bd;
+    -fx-text-alignment: center;
+    /*hacer bordes*/
+}
