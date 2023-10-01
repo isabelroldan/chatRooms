@@ -6,20 +6,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.event.ActionEvent?>
 
-<AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.controllers.IndexController">
-    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ecf0f3" height="365.0" layoutX="242.0" layoutY="268.0" stroke="BLACK" strokeType="INSIDE" width="936.0" />
-    <TextField fx:id="nicknameTextField" layoutX="582.0" layoutY="378.0" prefHeight="26.0" prefWidth="277.0" promptText="Nickname" style="-fx-prompt-text-fill: #030303;" />
+<AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="iesfranciscodelosrios.acd.controllers.IndexController">
+
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ecf0f3" height="365.0" layoutX="242.0" layoutY="268.0"
+               stroke="BLACK" strokeType="INSIDE" width="936.0" />
+    <TextField fx:id="nicknameTextField" layoutX="582.0" layoutY="378.0" prefHeight="26.0" prefWidth="277.0"
+               promptText="Nickname" style="-fx-prompt-text-fill: #030303;" />
 
     <!-- Agrega un espacio para el mensaje de nickname en uso -->
-    <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
+    <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0"
+           style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
 
-    <Button id="button" layoutX="592.0" layoutY="495.0" prefHeight="76.0" prefWidth="256.0" stylesheets="@Styles/Login.css" text="JOIN">
+    <Button layoutX="592.0" layoutY="495.0" prefHeight="76.0" prefWidth="256.0"
+            stylesheets="@Styles/Login.css" text="JOIN" onAction="#handleJoinButtonClick">
         <font>
             <Font name="Arial" size="24.0" />
         </font>
     </Button>
-    <Label layoutX="592.0" layoutY="282.0" prefHeight="59.0" prefWidth="256.0" style="-fx-text-fill: #030303; -fx-font-size: 18px;" text="INTRODUCE YOUR NICKNAME:" textAlignment="CENTER">
+    <Label layoutX="592.0" layoutY="282.0" prefHeight="59.0" prefWidth="256.0"
+           style="-fx-text-fill: #030303; -fx-font-size: 18px;" text="INTRODUCE YOUR NICKNAME:"
+           textAlignment="CENTER">
         <font>
             <Font name="Arial Black" size="48.0" />
         </font>

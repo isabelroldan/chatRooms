@@ -15,6 +15,11 @@ public class ChatServer {
     private List<ClientHandler> clientHandlers = new ArrayList<>();
 
     /**
+     * Nicknames in use
+     */
+    private Set<String> usedNicknames = new HashSet<>();
+
+    /**
      * La dirección IP del servidor.
      */
     String serverIp = "172.16.16.176";
@@ -23,7 +28,18 @@ public class ChatServer {
      */
     int serverPort = 8081; // Puerto del servidor
 
-    public ChatServer() {
+    // Atributo estático para almacenar la única instancia de ChatServer
+    private static ChatServer instance;
+
+    // Método estático para obtener la instancia única de ChatServer
+    public static ChatServer getInstance() {
+        if (instance == null) {
+            instance = new ChatServer();
+        }
+        return instance;
+    }
+
+    private ChatServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort); // Puerto del servidor. Se crea un socket de servidor (ServerSocket) que escucha en el puerto serverPort especificado
             System.out.println("El servidor está escuchando en la dirección IP " + serverIp + " y el puerto " + serverPort);
@@ -45,19 +61,21 @@ public class ChatServer {
         }
     }
 
+
+
     // Agrega un método para verificar si un nickname está en uso
     public synchronized boolean isNicknameAvailable(String nickname) {
-        return !connectedNicknames.contains(nickname);
+        return usedNicknames.contains(nickname);
     }
 
     // Agrega un método para registrar un nuevo nickname
     public synchronized void registerNickname(String nickname) {
-        connectedNicknames.add(nickname);
+        usedNicknames.add(nickname);
     }
 
     // Agrega un método para retirar un nickname cuando un usuario se desconecta
     public synchronized void unregisterNickname(String nickname) {
-        connectedNicknames.remove(nickname);
+        usedNicknames.remove(nickname);
     }
 
     // Agrega un método para enviar un mensaje a todos los usuarios conectados

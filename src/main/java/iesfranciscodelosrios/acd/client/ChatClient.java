@@ -4,6 +4,11 @@ import java.io.*;
 import java.net.*;
 
 public class  ChatClient {
+    private String nickname;
+    public ChatClient(String nickname) {
+        this.nickname = nickname;
+    }
+
     public static void main(String[] args) {
         try {
             //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
@@ -78,4 +83,6 @@ public class  ChatClient {
             }
         }
     }
+
+
 }
