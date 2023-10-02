@@ -5,9 +5,10 @@ public class User {
     private String ipAddress; // Dirección IP del usuario
     private Room currentRoom; // Sala actual del usuario
 
-    public User(String nickname, String ipAddress) {
+    public User(String nickname, String ipAddress, Room currentRoom) {
         this.nickname = nickname;
         this.ipAddress = ipAddress;
+        this.currentRoom = currentRoom;
     }
 
     // Getter para obtener el nombre de usuario

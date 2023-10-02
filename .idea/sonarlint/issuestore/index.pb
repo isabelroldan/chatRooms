@@ -15,3 +15,13 @@ x
 Hsrc/main/java/iesfranciscodelosrios/acd/controllers/BoardController.java,e\e\ee7db0c4c93d5dfc373b2db41128960b18c5b8f9
 n
 >src/main/java/iesfranciscodelosrios/acd/client/ChatClient.java,8\9\89bc6c5156171347ca6fd09891f909bbe48843b1
+x
+Hsrc/main/java/iesfranciscodelosrios/acd/controllers/IndexController.java,9\5\957649dee43b7994c531e6797c1d530b7c76f956
+n
+>src/main/java/iesfranciscodelosrios/acd/server/ChatServer.java,a\8\a81a713d4332f7cb0cd13ea20758c920e2d74ffe
+N
+src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+y
+Isrc/main/java/iesfranciscodelosrios/acd/controllers/ClientController.java,3\4\343abf9baaa628d41fce295cd67ed8c5465d44f7

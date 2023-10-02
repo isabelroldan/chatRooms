@@ -11,6 +11,7 @@ public class  ChatClient {
 
     public static void main(String[] args) {
         try {
+            // Cambiar por GetIP si se pudiera y da tiempo
             //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
             String serverIp = "172.16.16.176"; // Dirección IP del servidor
             int serverPort = 8081; // Puerto del servidor
@@ -54,7 +55,7 @@ public class  ChatClient {
     /**
      * Representa el hilo que escucha los mensajes del servidor y los muestra en la consola del cliente.
      */
-    static class UserMessageReceiver implements Runnable {
+    public static class UserMessageReceiver implements Runnable {
         private Socket clientSocket;
         private String clientNickname; // Almacena el nombre de usuario del cliente
 
