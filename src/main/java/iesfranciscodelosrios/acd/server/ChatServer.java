@@ -22,7 +22,7 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "172.16.16.176";
+    String serverIp = "192.168.18.13";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */
