@@ -22,7 +22,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Obtener la instancia única de ChatServer
-        chatServer = ChatServer.getInstance();
+        /*chatServer = ChatServer.getInstance();*/
 
         // Crear una instancia de FXMLLoader para cargar la vista
         FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
