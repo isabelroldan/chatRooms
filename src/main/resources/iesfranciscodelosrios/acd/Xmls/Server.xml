@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chatServerConfig>
-    <serverIp></serverIp>
+    <serverIp>172.16.16.176</serverIp>
     <serverPort>8081</serverPort>
 </chatServerConfig>
