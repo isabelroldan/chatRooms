@@ -2,7 +2,6 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.User;
 
-import javax.xml.bind.annotation.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;

@@ -2,10 +2,7 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.User;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -36,6 +33,20 @@ public class ClientController {
         return result;
     }
 
+    public void saveUserToXml(User user) {
+        try {
+            File file = new File("/resources/Xmls/Users.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(user, new FileWriter(file));
+            System.out.println("Usuario guardado exitosamente.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
     protected String serverIp = "192.168.18.13";
@@ -61,33 +72,6 @@ public class ClientController {
             out.println(message);
         }
     }
-
-    public static void saveUser(User user, String filePath) {
-        try {
-            File file = new File(filePath);
-            JAXBContext jaxbContext = JAXBContext.newInstance(UserWrapper.class);
-
-            // Obtener los usuarios existentes si el archivo ya existe
-            UserWrapper usersWrapper;
-            if (file.exists()) {
-                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-                usersWrapper = (UserWrapper) unmarshaller.unmarshal(file);
-            } else {
-                userWrapper = new UserWrapper();
-            }
-
-            // Agregar el nuevo usuario
-            userWrapper.getUser().add(user);
-
-            // Guardar la lista actualizada de usuarios
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(usersWrapper, file);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void disconnectFromServer() {
         try {
