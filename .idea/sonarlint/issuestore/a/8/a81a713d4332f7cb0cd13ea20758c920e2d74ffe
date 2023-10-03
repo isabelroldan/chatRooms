@@ -1,4 +1,8 @@
 
+f
+java:S2095,"JUse try-with-resources or close this "ServerSocket" in a "finally" clause.(â·¬=8Ä¿öŠ¯1
+?
+java:S21890""Add an end condition to this loop.(ßóÂ×8Å¿öŠ¯1
 ¶
 java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(æ‡³8ÎÕñ‚¯1
 X
