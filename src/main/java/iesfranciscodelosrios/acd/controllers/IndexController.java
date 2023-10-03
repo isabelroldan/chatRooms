@@ -1,18 +1,11 @@
 package iesfranciscodelosrios.acd.controllers;
 
-
-
 import iesfranciscodelosrios.acd.client.ChatClient;
 import iesfranciscodelosrios.acd.server.ChatServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class IndexController {
@@ -50,9 +43,6 @@ public class IndexController {
             // Puedes continuar con la lógica para iniciar el ChatClient aquí
             // Por ejemplo, iniciar un nuevo ChatClient con el nickname
             startChatClient(nickname);
-
-
-
         }
     }
 

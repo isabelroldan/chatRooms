@@ -1,11 +1,18 @@
 package iesfranciscodelosrios.acd.models;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
+
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
     private String nickname; // Nombre de usuario
     private String ipAddress; // Dirección IP del usuario
     private Room currentRoom; // Sala actual del usuario
+
+    @XmlElementWrapper(name = "users")
+    @XmlElement(name = "user")
     private List<User> users;
 
     public List<User> getUsers() {
