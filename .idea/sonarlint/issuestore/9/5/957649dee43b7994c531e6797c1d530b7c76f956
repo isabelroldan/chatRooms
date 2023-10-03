@@ -1,14 +1,5 @@
 
 y
-java:S1450"WRemove the "nickname" field and declare it as a local variable in the relevant methods.(¥šÓßÿÿÿÿÿ8×¯ğŠ¯1
+java:S1450"WRemove the "nickname" field and declare it as a local variable in the relevant methods.(¥šÓßÿÿÿÿÿ8Ç ê¨¯1
 W
-java:S2209G"5Change this instance-reference to a static reference.(ø‘ÎÑüÿÿÿÿ8æ¯ğŠ¯1
-U
-java:S1128	"3Remove this unused import 'javafx.fxml.FXMLLoader'.(À‡ô³úÿÿÿÿ8æ¯ğŠ¯1
-M
-java:S1128
-"0Remove this unused import 'javafx.scene.Parent'.(²ä¡È8æ¯ğŠ¯1
-L
-java:S1128"/Remove this unused import 'javafx.scene.Scene'.(Õü²8ç¯ğŠ¯1
-Q
-java:S1128"/Remove this unused import 'javafx.stage.Stage'.(æÄ¸²úÿÿÿÿ8ç¯ğŠ¯1
+java:S2209="5Change this instance-reference to a static reference.(ø‘ÎÑüÿÿÿÿ8çíè¨¯1

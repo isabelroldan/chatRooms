@@ -25,3 +25,9 @@ N
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 y
 Isrc/main/java/iesfranciscodelosrios/acd/controllers/ClientController.java,3\4\343abf9baaa628d41fce295cd67ed8c5465d44f7
+w
+Gsrc/main/java/iesfranciscodelosrios/acd/controllers/UserController.java,f\1\f13b1864eb7f055416bf9b103465cebe0604d8ce
+s
+Csrc/main/java/iesfranciscodelosrios/acd/controllers/XMLHandler.java,4\2\422e837db3b130a9dd8d079fe715805b3139c643
+y
+Isrc/main/java/iesfranciscodelosrios/acd/controllers/IndexController2.java,e\6\e62570af6cfd2553c25367cd2602a405a749e7fe

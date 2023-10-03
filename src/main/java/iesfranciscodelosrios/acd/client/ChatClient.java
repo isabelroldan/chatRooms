@@ -12,6 +12,6 @@ public class  ChatClient {
 
     public static void main(String[] args) throws IOException {
         ClientController c = new ClientController();
-        c.clientConnection();
+        c.connectToServer();
     }
 }

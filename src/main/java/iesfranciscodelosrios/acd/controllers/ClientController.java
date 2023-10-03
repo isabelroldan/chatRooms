@@ -1,23 +1,50 @@
 package iesfranciscodelosrios.acd.controllers;
 
-import iesfranciscodelosrios.acd.models.Room;
 import iesfranciscodelosrios.acd.models.User;
 
+import javax.xml.bind.*;
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 public class ClientController {
-    //Valores por defecto para el usuario
-    private String nickname = null;
-    private String ip = null;
-    private Room room = null;
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
+    private Thread messageReceiverThread;
 
-    private Object client(String nickname, String ip, Room room){
-        nickname = this.nickname;
-        ip = this.ip;
-        room = this.room;
-        User user = new User(nickname, ip, room);
-        return user;
+    public boolean isUserLogedIn(String nickname) throws IOException {
+        boolean result = false;
+        try {
+            File file = new File("../../../resources/xmls/Users.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            User users = (User) unmarshaller.unmarshal(file);
+
+            List<User> userList = users.getUsers();
+            for (User user : userList) {
+                if (user.getNickname().equals(nickname)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void saveUserToXml(User user) {
+        try {
+            File file = new File("/resources/Xmls/Users.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(user, new FileWriter(file));
+            System.out.println("Usuario guardado exitosamente.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Cambiar por GetIP si se pudiera y da tiempo
@@ -25,71 +52,53 @@ public class ClientController {
     protected String serverIp = "192.168.18.13";
     protected int serverPort = 8081;
 
-    public void clientConnection() throws IOException {
+    public void connectToServer() {
         try {
-            //Se crea un socket clientSocket para conectarse al servidor utilizando la dirección IP y el puerto proporcionados.
-            Socket clientSocket = new Socket(serverIp, serverPort); // Conecta al servidor
+            clientSocket = new Socket(serverIp, serverPort);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            //Se crea un BufferedReader llamado userInput para leer la entrada del usuario desde la consola.
-            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
-
-            //Se crea un PrintWriter llamado out para enviar mensajes al servidor a través del socket.
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            // Solicitar al usuario un nickname
-            System.out.print("Ingresa tu nickname: ");
-
-            //El nickname ingresado por el usuario se envía al servidor utilizando el objeto out.
-            // Esto permite que el servidor identifique al cliente por su nombre de usuario.
-            String nickname = userInput.readLine();
-
-            // Enviar el nickname al servidor
-            out.println(nickname);
-
-            // Iniciar un hilo para recibir y mostrar mensajes del servidor
-            new Thread(new UserMessageReceiver(clientSocket, nickname)).start(); //Se pasa el socket del cliente (clientSocket) y el nickname del cliente (nickname) al constructor de UserMessageReceiver.
-
-            // Leer y enviar mensajes al servidor
-            String message;
-
-            //El cliente entra en un bucle donde lee mensajes desde la consola (userInput)
-            // y los envía al servidor a través de out. Esto permite al cliente enviar mensajes al servidor y, por lo tanto, al chat.
-            while ((message = userInput.readLine()) != null) {
-                out.println(message);
-            }
+            // Iniciar un hilo para recibir mensajes del servidor
+            messageReceiverThread = new Thread(new UserMessageReceiver());
+            messageReceiverThread.start();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void sendMessageToServer(String message) {
+        if (out != null) {
+            out.println(message);
+        }
+    }
+
+    public void disconnectFromServer() {
+        try {
+            if (messageReceiverThread != null && messageReceiverThread.isAlive()) {
+                messageReceiverThread.interrupt();
+            }
+
+            if (in != null) in.close();
+            if (out != null) out.close();
+            if (clientSocket != null && !clientSocket.isClosed()) clientSocket.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Representa el hilo que escucha los mensajes del servidor y los muestra en la consola del cliente.
      */
-    private static class UserMessageReceiver implements Runnable {
-        private Socket clientSocket;
-        private String clientNickname; // Almacena el nombre de usuario del cliente
-
-        public UserMessageReceiver(Socket clientSocket, String clientNickname) {
-            this.clientSocket = clientSocket;
-            this.clientNickname = clientNickname;
-        }
-
+    private class UserMessageReceiver implements Runnable {
         @Override
         public void run() {
             try {
-                //BufferedReader para leer mensajes del servidor a través del socket.
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String message;
-
-                //Dentro de un bucle, se lee continuamente desde el servidor y se muestra en la consola del cliente, a menos que el mensaje provenga del propio cliente (identificado por el nickname).
-                // De esta manera, los mensajes enviados por el propio cliente no se muestran en su propia consola.
                 while ((message = in.readLine()) != null) {
-                    // Verifica si el mensaje no proviene del propio cliente
-                    if (!message.startsWith(clientNickname + ":")) {
-                        System.out.println(message);
-                    }
+                    // Manejar el mensaje recibido del servidor
+                    System.out.println("Mensaje del servidor: " + message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
