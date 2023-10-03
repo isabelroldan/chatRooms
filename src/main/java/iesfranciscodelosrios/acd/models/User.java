@@ -1,23 +1,42 @@
 package iesfranciscodelosrios.acd.models;
 
+import java.util.List;
+
 public class User {
     private String nickname; // Nombre de usuario
     private String ipAddress; // Dirección IP del usuario
     private Room currentRoom; // Sala actual del usuario
+    private List<User> users;
 
-    public User(String nickname, String ipAddress) {
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public User(String nickname, String ipAddress, Room currentRoom) {
         this.nickname = nickname;
         this.ipAddress = ipAddress;
+        this.currentRoom = currentRoom;
     }
 
     // Getter para obtener el nombre de usuario
     public String getNickname() {
         return nickname;
     }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     // Getter para obtener la dirección IP del usuario
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     // Getter para obtener la sala actual del usuario

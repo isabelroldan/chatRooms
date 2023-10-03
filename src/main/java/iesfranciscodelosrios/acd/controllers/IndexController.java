@@ -20,7 +20,6 @@ public class IndexController {
     @FXML
     private TextField nicknameTextField;
 
-
     @FXML
     private Label nicknameInUseLabel;
 
@@ -64,7 +63,7 @@ public class IndexController {
     }
 
     // Implementa la lógica para iniciar el ChatClient con el nickname
-    private void startChatClient(String nickname) {
+    private void startChatClient(String nickname) throws IOException {
         // Crear una instancia de ChatClient y pasar el nickname como argumento
         ChatClient chatClient = new ChatClient(nickname);
 

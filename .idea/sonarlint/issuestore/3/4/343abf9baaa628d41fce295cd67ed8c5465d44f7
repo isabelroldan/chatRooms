@@ -1,0 +1,15 @@
+
+x
+java:S1488"\Immediately return this expression instead of assigning it to the temporary variable "user".(‘š“:8ËÖàŠ¯1
+b
+java:S1226"EIntroduce a new variable instead of reusing the parameter "nickname".(üÎ8ÍÖàŠ¯1
+a
+java:S1226"?Introduce a new variable instead of reusing the parameter "ip".(¸¹¦½ùÿÿÿÿ8ÍÖàŠ¯1
+c
+java:S1226"AIntroduce a new variable instead of reusing the parameter "room".(Ç³ëùÿÿÿÿ8ÍÖàŠ¯1
+a
+java:S2095"DUse try-with-resources or close this "Socket" in a "finally" clause.(•Ê‚Ï8 ïûŠ¯1
+Y
+java:S1117,"<Rename "nickname" which hides the field declared at line 11.(æ¨ğ°8ãÖàŠ¯1
+M
+java:S1144"+Remove this unused private "client" method.(ëÛá¾ûÿÿÿÿ8éÖàŠ¯1
