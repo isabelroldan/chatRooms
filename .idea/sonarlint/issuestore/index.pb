@@ -15,8 +15,6 @@ x
 Hsrc/main/java/iesfranciscodelosrios/acd/controllers/BoardController.java,e\e\ee7db0c4c93d5dfc373b2db41128960b18c5b8f9
 n
 >src/main/java/iesfranciscodelosrios/acd/client/ChatClient.java,8\9\89bc6c5156171347ca6fd09891f909bbe48843b1
-x
-Hsrc/main/java/iesfranciscodelosrios/acd/controllers/IndexController.java,9\5\957649dee43b7994c531e6797c1d530b7c76f956
 n
 >src/main/java/iesfranciscodelosrios/acd/server/ChatServer.java,a\8\a81a713d4332f7cb0cd13ea20758c920e2d74ffe
 N
@@ -31,3 +29,6 @@ s
 Csrc/main/java/iesfranciscodelosrios/acd/controllers/XMLHandler.java,4\2\422e837db3b130a9dd8d079fe715805b3139c643
 y
 Isrc/main/java/iesfranciscodelosrios/acd/controllers/IndexController2.java,e\6\e62570af6cfd2553c25367cd2602a405a749e7fe
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302

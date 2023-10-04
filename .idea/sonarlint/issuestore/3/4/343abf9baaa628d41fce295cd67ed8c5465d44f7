@@ -1,3 +1,5 @@
 
 Ž
-java:S1130"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(›ã»Ñþÿÿÿÿ8’ˆÞª¯1
+java:S1130"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(›ã»Ñþÿÿÿÿ8’ˆÞª¯1
+^
+java:S1075&"ARefactor your code to get this URI from a customizable parameter.(òªõ˜8ÒÍ†³¯1
