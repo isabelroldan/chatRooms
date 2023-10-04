@@ -1,6 +1,6 @@
 package iesfranciscodelosrios.acd.models;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
 
@@ -23,10 +23,15 @@ public class User {
         this.users = users;
     }
 
+
     public User(String nickname, String ipAddress, Room currentRoom) {
         this.nickname = nickname;
         this.ipAddress = ipAddress;
         this.currentRoom = currentRoom;
+    }
+
+    public User(){
+
     }
 
     // Getter para obtener el nombre de usuario
@@ -56,13 +61,4 @@ public class User {
         currentRoom = room;
     }
 
-    // Método para enviar un mensaje en la sala actual del usuario
-    public void sendMessage(String content) {
-        if (currentRoom != null) {
-            Message message = new Message(nickname, content);
-            currentRoom.addMessage(message);
-        } else {
-            System.out.println("Usuario no está en una sala.");
-        }
-    }
 }

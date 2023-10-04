@@ -2,7 +2,9 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.User;
 
-import javax.xml.bind.*;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -16,7 +18,7 @@ public class ClientController {
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
         try {
-            File file = new File("../../../resources/xmls/Users.xml");
+            File file = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             User users = (User) unmarshaller.unmarshal(file);
@@ -35,7 +37,7 @@ public class ClientController {
 
     public void saveUserToXml(User user) {
         try {
-            File file = new File("/resources/Xmls/Users.xml");
+            File file = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -49,7 +51,7 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.168.18.13";
+    protected String serverIp = "172.16.16.176";
     protected int serverPort = 8081;
 
     public void connectToServer() {
