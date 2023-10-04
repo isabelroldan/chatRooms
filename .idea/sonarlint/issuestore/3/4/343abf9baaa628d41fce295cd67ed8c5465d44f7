@@ -1,3 +1,5 @@
 
 
-java:S1130"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(›ã»Ñşÿÿÿÿ8ÛÆ°Ï¯1
+java:S1130"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(›ã»Ñşÿÿÿÿ8ÀÙºŞ¯1
+u
+java:S2118U"XMake the "iesfranciscodelosrios.acd.models.User" class "Serializable" or don't write it.(ÌôÃ8ÉÙºŞ¯1
