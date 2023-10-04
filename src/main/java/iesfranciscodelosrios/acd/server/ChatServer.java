@@ -1,5 +1,10 @@
 package iesfranciscodelosrios.acd.server;
 
+import iesfranciscodelosrios.acd.models.User;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -22,7 +27,7 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "192.168.16.108";
+    String serverIp = "192.168.18.13";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */
@@ -41,7 +46,7 @@ public class ChatServer {
         return instance;
     }
 
-    private ChatServer() {
+    public ChatServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort); // Puerto del servidor. Se crea un socket de servidor (ServerSocket) que escucha en el puerto serverPort especificado
             System.out.println("El servidor está escuchando en la dirección IP " + serverIp + " y el puerto " + serverPort);
@@ -57,7 +62,8 @@ public class ChatServer {
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
                 // Esto permite manejar múltiples clientes simultáneamente.
                 //Es decir, Por cada nueva conexión, crea una instancia de ClientHandler, pasa el socket del cliente
-                // y una referencia al servidor a esta instancia, y la inicia. Esto permite que múltiples clientes se conecten y se comuniquen simultáneamente.
+                // y una referencia al servidor a esta instancia, y la inicia.
+                // Esto permite que múltiples clientes se conecten y se comuniquen simultáneamente.
                 ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                 clientHandlers.add(clientHandler);
                 clientHandler.start();
@@ -90,6 +96,53 @@ public class ChatServer {
         }
     }
 
+    public static void saveUserInXml(User user) {
+        try {
+            // Leer el archivo XML existente
+            File xmlFile = new File(XML_FILE_PATH);
+            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            User users = (User) unmarshaller.unmarshal(xmlFile);
+
+            // Agregar el nuevo usuario
+            if (users != null) {
+                List<User> userList = users.getUsers();
+                userList.add(user);
+                users.setUsers(userList);
+            }
+
+            // Marshalling y guardar en el archivo XML
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(users, xmlFile);
+
+            System.out.println("Usuario guardado exitosamente.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class ClientHandlerAux extends Thread {
+        private Socket clientSocket;
+
+        @Override
+        public void run() {
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream())) {
+                // Recibir el objeto User del cliente
+                User receivedUser = (User) objectInputStream.readObject();
+                System.out.println("Usuario recibido del cliente: " + receivedUser);
+
+                // Guardar el usuario en el archivo XML
+                saveUserInXml(receivedUser);
+
+                // Otros procesos
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Agrega un método para verificar si un nickname está en uso
     public synchronized boolean isNicknameAvailable(String nickname) {
         return usedNicknames.contains(nickname);
@@ -105,18 +158,6 @@ public class ChatServer {
         usedNicknames.remove(nickname);
     }
 
-    // Agrega un método para enviar un mensaje a todos los usuarios conectados
-    public synchronized void broadcastMessage(String message) {
-        for (ClientHandler clientHandler : clientHandlers) {
-            clientHandler.sendMessage(message);
-        }
-    }
-
-    // Agrega un método para eliminar un usuario de la lista de usuarios conectados
-    public synchronized void removeClient(ClientHandler clientHandler) {
-        clientHandlers.remove(clientHandler);
-    }
-
     /**
      *  Crea una instancia del servidor llamando al constructor new ChatServer(), lo que inicia el servidor y lo pone en espera de conexiones entrantes.
      * @param args argumento
@@ -125,3 +166,4 @@ public class ChatServer {
         new ChatServer(); // Crea una instancia del servidor
     }
 }
+
