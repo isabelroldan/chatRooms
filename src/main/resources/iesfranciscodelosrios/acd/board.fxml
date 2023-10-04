@@ -33,7 +33,7 @@
 
     <!-- Recuadros para representar las salas -->
     <Rectangle fx:id="sala1Rect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="87.0" layoutY="198.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-    <Label layoutX="100.0" layoutY="210.0" prefHeight="30.0" prefWidth="100.0" text="Sala 1" textAlignment="LEFT">
+    <Label fx:id="room1Label" layoutX="100.0" layoutY="210.0" prefHeight="76.0" prefWidth="208.0" text="Sala 1" textAlignment="LEFT">
         <font>
             <Font name="Arial" size="18.0" />
         </font>
@@ -45,7 +45,7 @@
     </Label>
 
     <Rectangle fx:id="sala2Rect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="87.0" layoutY="318.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-    <Label layoutX="100.0" layoutY="330.0" prefHeight="30.0" prefWidth="100.0" text="Sala 2" textAlignment="LEFT">
+    <Label fx:id="room2Label" layoutX="100.0" layoutY="330.0" prefHeight="82.0" prefWidth="195.0" text="Sala 2" textAlignment="LEFT">
         <font>
             <Font name="Arial" size="18.0" />
         </font>
@@ -68,17 +68,17 @@
    <Rectangle fx:id="sala3Rect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="87.0" layoutY="450.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
    <Rectangle fx:id="sala4Rect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="87.0" layoutY="574.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
    <Rectangle fx:id="sala5Rect" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="87.0" layoutY="715.0" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
-   <Label layoutX="100.0" layoutY="466.0" prefHeight="30.0" prefWidth="100.0" text="Sala 3" textAlignment="LEFT">
+   <Label fx:id="room3Label" layoutX="100.0" layoutY="466.0" prefHeight="76.0" prefWidth="185.0" text="Sala 3" textAlignment="LEFT">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="100.0" layoutY="594.0" prefHeight="30.0" prefWidth="100.0" text="Sala 4" textAlignment="LEFT">
+   <Label fx:id="room4Label" layoutX="100.0" layoutY="594.0" prefHeight="70.0" prefWidth="185.0" text="Sala 4" textAlignment="LEFT">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="100.0" layoutY="735.0" prefHeight="30.0" prefWidth="100.0" text="Sala 5" textAlignment="LEFT">
+   <Label fx:id="room5Label" layoutX="100.0" layoutY="735.0" prefHeight="70.0" prefWidth="185.0" text="Sala 5" textAlignment="LEFT">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
