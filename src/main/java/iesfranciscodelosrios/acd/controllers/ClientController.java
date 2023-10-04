@@ -10,7 +10,7 @@ import java.net.*;
 import java.util.List;
 
 public class ClientController {
-    private Socket clientSocket;
+    private Socket clientSocket = new Socket();
     private PrintWriter out;
     private BufferedReader in;
     private Thread messageReceiverThread;
@@ -57,7 +57,7 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.16.16.108";
+    protected String serverIp = "192.16.18.13";
     protected int serverPort = 8081;
 
     public void connectToServer(User client) {
@@ -66,32 +66,24 @@ public class ClientController {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            User userToCheck = new User();
-            userToCheck.setNickname(client.getNickname());
-
             // Enviar la solicitud al servidor
-            sendUserToServer(clientSocket, userToCheck);
+            sendUserToServer(client);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void sendUserToServer(Socket socket, User userToCheck) throws IOException {
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())) {
-
+    public void sendUserToServer(User user) {
+        try {
             // Enviar el objeto User al servidor
-            objectOutputStream.writeObject(userToCheck);
-            objectOutputStream.flush();
-
-            // Recibir la respuesta del servidor
-            try {
-                User newUser = (User) objectInputStream.readObject();
-                System.out.println("Respuesta del servidor: " + newUser.toString());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream())) {
+                objectOutputStream.writeObject(user);
+                objectOutputStream.flush();
+                System.out.println("User pushed to server to save it in the XML file");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
