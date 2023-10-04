@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-public class IndexController2 {
+public class IndexController {
 
     @FXML
     private TextField nicknameTextField;
@@ -32,7 +32,7 @@ public class IndexController2 {
         // Obtener el nickname ingresado por el usuario
         client.setNickname(nicknameTextField.getText());
         //Conectar al servidor
-        c.connectToServer();//Modificarlo para la interfaz grafica
+        c.connectToServer(client);//Modificarlo para la interfaz grafica
         // Verificar si el nickname está en uso
         // Mostrar un mensaje en el Label según el resultado
         if (c.isUserLogedIn(client.getNickname())) {

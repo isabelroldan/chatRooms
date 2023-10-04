@@ -60,18 +60,38 @@ public class ClientController {
     protected String serverIp = "192.16.16.108";
     protected int serverPort = 8081;
 
-    public void connectToServer() {
+    public void connectToServer(User client) {
         try {
             clientSocket = new Socket(serverIp, serverPort);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            // Iniciar un hilo para recibir mensajes del servidor
-            messageReceiverThread = new Thread(new UserMessageReceiver());
-            messageReceiverThread.start();
+            User userToCheck = new User();
+            userToCheck.setNickname(client.getNickname());
+
+            // Enviar la solicitud al servidor
+            sendUserToServer(clientSocket, userToCheck);
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void sendUserToServer(Socket socket, User userToCheck) throws IOException {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())) {
+
+            // Enviar el objeto User al servidor
+            objectOutputStream.writeObject(userToCheck);
+            objectOutputStream.flush();
+
+            // Recibir la respuesta del servidor
+            try {
+                User newUser = (User) objectInputStream.readObject();
+                System.out.println("Respuesta del servidor: " + newUser.toString());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -93,24 +113,6 @@ public class ClientController {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Representa el hilo que escucha los mensajes del servidor y los muestra en la consola del cliente.
-     */
-    private class UserMessageReceiver implements Runnable {
-        @Override
-        public void run() {
-            try {
-                String message;
-                while ((message = in.readLine()) != null) {
-                    // Manejar el mensaje recibido del servidor
-                    System.out.println("Mensaje del servidor: " + message);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

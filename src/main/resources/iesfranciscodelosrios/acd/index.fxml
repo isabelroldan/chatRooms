@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.controllers.IndexController2">
+<AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.controllers.IndexController">
 
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ecf0f3" height="365.0" layoutX="242.0" layoutY="268.0" stroke="BLACK" strokeType="INSIDE" width="936.0" />
     <TextField fx:id="nicknameTextField" layoutX="582.0" layoutY="378.0" prefHeight="26.0" prefWidth="277.0" promptText="Nickname" style="-fx-prompt-text-fill: #030303;" />
