@@ -10,7 +10,7 @@ import java.net.*;
 import java.util.List;
 
 public class ClientController {
-    private Socket clientSocket = new Socket();
+    private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
     private Thread messageReceiverThread;
@@ -66,15 +66,16 @@ public class ClientController {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+            isUserLogedIn(client.getNickname());
             // Enviar la solicitud al servidor
-            sendUserToServer(client);
+            sendUserToServer(clientSocket, client);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendUserToServer(User user) {
+    public void sendUserToServer(Socket socket,User user) {
         try {
             // Enviar el objeto User al servidor
             try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream())) {

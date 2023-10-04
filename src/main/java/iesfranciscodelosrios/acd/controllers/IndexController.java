@@ -2,7 +2,6 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.App;
 import iesfranciscodelosrios.acd.models.User;
-import iesfranciscodelosrios.acd.server.ChatServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,6 +25,9 @@ public class IndexController {
 
     private User client = new User(null, null, null);
 
+    public IndexController() throws IOException {
+    }
+
 
     @FXML
     void ButtonJoin(ActionEvent event) throws IOException {
@@ -45,8 +47,6 @@ public class IndexController {
         } else {
             nicknameInUseLabel.setText("Nickname disponible.");
             nicknameInUseLabel.setVisible(true);
-            //Enviar el nuevo usuario al servidor
-            c.sendUserToServer(client);
             //Guardar el usuario en XML en el servidor
 
             c.saveUserToXml(client);//Crear este metodo
