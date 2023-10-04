@@ -4,6 +4,8 @@ import iesfranciscodelosrios.acd.App;
 import iesfranciscodelosrios.acd.models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -50,7 +52,17 @@ public class IndexController {
             //Guardar el usuario en XML en el servidor
 
             c.saveUserToXml(client);//Crear este metodo
-            App.setRoot("board");
+
+            // Obtener el nickname ingresado por el usuario
+            client.setNickname(nicknameTextField.getText());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/board.fxml"));
+            Parent root = loader.load();
+            BoardController boardController = loader.getController();
+            boardController.setNickname(client.getNickname());
+
+            // Establecer la vista cargada como raíz de la aplicación
+            App.setRoot(root);
         }
     }
 }
