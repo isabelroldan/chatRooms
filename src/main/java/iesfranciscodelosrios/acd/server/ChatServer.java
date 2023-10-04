@@ -22,11 +22,13 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "192.168.18.13";
+    String serverIp = "192.168.16.108";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */
     int serverPort = 8081; // Puerto del servidor
+
+    private static final String XML_FILE_PATH = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
 
     // Atributo estático para almacenar la única instancia de ChatServer
     private static ChatServer instance;
@@ -47,6 +49,10 @@ public class ChatServer {
             // Aceptar conexiones entrantes en un bucle infinito
             while (true) { //Entra en un bucle infinito para aceptar conexiones entrantes de clientes.
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("Conexión aceptada");
+                // Enviar el contenido del XML al cliente
+               sendXmlFile(clientSocket);
+
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (ClientHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
                 // Esto permite manejar múltiples clientes simultáneamente.
@@ -61,7 +67,28 @@ public class ChatServer {
         }
     }
 
+    private static void sendXmlFile(Socket clientSocket) throws IOException {
+        File xmlFile = new File(XML_FILE_PATH);
+        if (!xmlFile.exists()) {
+            System.err.println("El archivo XML no existe en la ruta especificada.");
+            return;
+        }
 
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(xmlFile));
+             OutputStream os = clientSocket.getOutputStream()) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            // Leer del archivo y enviar al cliente en bloques
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+                os.flush();
+            }
+
+            System.out.println("Archivo XML enviado al cliente.");
+        }
+    }
 
     // Agrega un método para verificar si un nickname está en uso
     public synchronized boolean isNicknameAvailable(String nickname) {

@@ -1,9 +1,7 @@
 
 f
-java:S2095,"JUse try-with-resources or close this "ServerSocket" in a "finally" clause.(â·¬=8Ä¿öŠ¯1
-?
-java:S21890""Add an end condition to this loop.(ßóÂ×8Å¿öŠ¯1
+java:S2095."JUse try-with-resources or close this "ServerSocket" in a "finally" clause.(â·¬=8¦Ã’Ğ¯1
 ¶
-java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(æ‡³8ÎÕñ‚¯1
+java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(æ‡³8§Ã’Ğ¯1
 X
-java:S1068"6Remove this unused "connectedNicknames" private field.(¬¾è¬şÿÿÿÿ8ØÕñ‚¯1
+java:S1068"6Remove this unused "connectedNicknames" private field.(¬¾è¬şÿÿÿÿ8±Ã’Ğ¯1
