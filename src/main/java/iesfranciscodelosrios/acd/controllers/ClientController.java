@@ -23,10 +23,16 @@ public class ClientController {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             User users = (User) unmarshaller.unmarshal(file);
 
-            List<User> userList = users.getUsers();
-            for (User user : userList) {
-                if (user.getNickname().equals(nickname)) {
-                    return true;
+            if (users != null) {
+                List<User> userList = users.getUsers();
+                if (userList != null) {
+                    for (User user : userList) {
+                        if (user.getNickname().equals(nickname)) {
+                            return true;
+                        }
+                    }
+                } else {
+                    System.out.println("La lista está vacía");
                 }
             }
         } catch (Exception e) {
@@ -51,7 +57,7 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "172.16.16.176";
+    protected String serverIp = "192.16.16.108";
     protected int serverPort = 8081;
 
     public void connectToServer() {

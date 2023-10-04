@@ -2,8 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -31,10 +29,5 @@
          <Font name="Arial" size="24.0" />
       </font>
    </Button>
-   <TableView layoutX="87.0" layoutY="198.0" prefHeight="673.0" prefWidth="1280.0">
-     <columns>
-       <TableColumn prefWidth="1055.0" text="C1" />
-       <TableColumn minWidth="0.0" prefWidth="189.0" text="C2" />
-     </columns>
-   </TableView>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="118.0" layoutX="72.0" layoutY="183.0" stroke="BLACK" strokeType="INSIDE" width="1308.0" />
 </AnchorPane>
