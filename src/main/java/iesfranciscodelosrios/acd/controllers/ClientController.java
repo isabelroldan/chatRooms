@@ -2,6 +2,7 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.User;
 
+import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
@@ -19,9 +20,9 @@ public class ClientController {
         boolean result = false;
         try {
             File file = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            User users = (User) unmarshaller.unmarshal(file);
+            Users users = (Users) unmarshaller.unmarshal(file);
 
             if (users != null) {
                 List<User> userList = users.getUsers();
@@ -34,7 +35,7 @@ public class ClientController {
                 } else {
                     System.out.println("La lista está vacía");
                 }
-            }
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +58,7 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "172.16.16.108";
+    protected String serverIp = "192.168.18.13";
     protected int serverPort = 8081;
 
     public void connectToServer(User client) {

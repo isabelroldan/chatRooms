@@ -1,6 +1,7 @@
 package iesfranciscodelosrios.acd.server;
 
 import iesfranciscodelosrios.acd.models.User;
+import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
@@ -56,7 +57,7 @@ public class ChatServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Conexión aceptada");
                 // Enviar el contenido del XML al cliente
-               sendXmlFile(clientSocket);
+                sendXmlFile(clientSocket);
 
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (ClientHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
@@ -100,15 +101,15 @@ public class ChatServer {
         try {
             // Leer el archivo XML existente
             File xmlFile = new File(XML_FILE_PATH);
-            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            User users = (User) unmarshaller.unmarshal(xmlFile);
+            Users users = (Users) unmarshaller.unmarshal(xmlFile);
 
             // Agregar el nuevo usuario
             if (users != null) {
-                List<User> userList = users.getUsers();
-                userList.add(user);
-                users.setUsers(userList);
+                ArrayList<User> usersList = users.getUsers();
+                usersList.add(user);
+                users.setUsers(usersList);
             }
 
             // Marshalling y guardar en el archivo XML

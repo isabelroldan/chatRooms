@@ -30,7 +30,6 @@ public class IndexController {
     public IndexController() throws IOException {
     }
 
-
     @FXML
     void ButtonJoin(ActionEvent event) throws IOException {
         // Obtener el nickname ingresado por el usuario
