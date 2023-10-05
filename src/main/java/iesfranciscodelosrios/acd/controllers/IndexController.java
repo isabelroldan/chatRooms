@@ -49,7 +49,7 @@ public class IndexController {
             nicknameInUseLabel.setVisible(true);
             //Guardar el usuario en XML en el servidor
 
-            c.saveUserToXml(client);//Crear este metodo
+            //c.saveUserToXml(client);
             App.setRoot("board");
         }
     }
