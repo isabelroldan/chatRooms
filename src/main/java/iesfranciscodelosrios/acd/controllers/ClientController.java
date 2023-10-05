@@ -57,28 +57,31 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.16.18.13";
+    protected String serverIp = "172.16.16.108";
     protected int serverPort = 8081;
 
     public void connectToServer(User client) {
         try {
-            clientSocket = new Socket(serverIp, serverPort);
+            Socket clientSocket = new Socket(serverIp, serverPort);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            isUserLogedIn(client.getNickname());
-            // Enviar la solicitud al servidor
-            sendUserToServer(clientSocket, client);
-
+            if(isUserLogedIn(client.getNickname()) == false) {
+                //Enviar la solicitud al servidor
+                sendUserToServer(clientSocket, client);
+            }else{
+                disconnectFromServer();
+                System.out.println("Nickname en uso");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendUserToServer(Socket socket,User user) {
+    private void sendUserToServer(Socket socket,User user) {
         try {
             // Enviar el objeto User al servidor
-            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
                 objectOutputStream.writeObject(user);
                 objectOutputStream.flush();
                 System.out.println("User pushed to server to save it in the XML file");

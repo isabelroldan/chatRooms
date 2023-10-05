@@ -51,6 +51,7 @@ public class IndexController {
             nicknameInUseLabel.setVisible(true);
             //Guardar el usuario en XML en el servidor
 
+            //c.saveUserToXml(client);
             c.saveUserToXml(client);//Crear este metodo
 
             // Obtener el nickname ingresado por el usuario
@@ -63,6 +64,7 @@ public class IndexController {
 
             // Establecer la vista cargada como raíz de la aplicación
             App.setRoot(root);
+
         }
     }
 }
