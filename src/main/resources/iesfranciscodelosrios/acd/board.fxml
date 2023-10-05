@@ -22,7 +22,7 @@
             <Font name="Arial Black" size="48.0" />
         </font>
     </Label>
-    <Button layoutX="1171.0" layoutY="47.0" prefHeight="76.0" prefWidth="195.0" stylesheets="@Styles/Login.css" text="ENTRAR">
+    <Button layoutX="1171.0" layoutY="47.0" prefHeight="76.0" prefWidth="195.0" stylesheets="@Styles/Login.css" text="ENTRAR" onAction="#unirseASala">
         <font>
             <Font name="Arial" size="24.0" />
         </font>
@@ -52,12 +52,12 @@
             <Font name="Arial" size="18.0" />
         </font>
     </Label>
-   <Label layoutX="1243.0" layoutY="248.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room1ConnectedLabel" layoutX="1243.0" layoutY="248.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="1243.0" layoutY="368.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room2ConnectedLabel" layoutX="1243.0" layoutY="368.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
@@ -85,7 +85,7 @@
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="1243.0" layoutY="504.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room3ConnectedLabel" layoutX="1243.0" layoutY="504.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
@@ -95,7 +95,7 @@
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="1243.0" layoutY="632.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room4ConnectedLabel" layoutX="1243.0" layoutY="632.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
@@ -105,7 +105,7 @@
          <Font name="Arial" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="1243.0" layoutY="773.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room5ConnectedLabel" layoutX="1243.0" layoutY="773.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
       <font>
          <Font name="Arial" size="18.0" />
       </font>
