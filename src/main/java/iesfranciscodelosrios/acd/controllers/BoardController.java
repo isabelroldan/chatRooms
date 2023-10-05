@@ -36,7 +36,8 @@ public class BoardController {
     private Label room5Label;
 
 
-
+    @FXML
+    private Label nicknameLabel;
 
     private Rectangle rectanguloSeleccionado = null;
 
@@ -51,6 +52,10 @@ public class BoardController {
 
         //Cargar nombres de salas desde el archivo XML
         loadRoomNamesFromXML();
+    }
+
+    public void setNickname(String nickname) {
+        nicknameLabel.setText(nickname);
     }
 
     // Método para cambiar el color del rectángulo cuando se hace clic
