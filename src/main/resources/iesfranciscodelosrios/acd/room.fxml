@@ -40,9 +40,9 @@
          <Font name="Arial Black" size="48.0" />
       </font>
    </Label>
-   <TableView layoutX="1211.0" layoutY="192.0" prefHeight="548.0" prefWidth="195.0">
+   <TableView fx:id="usersTableView" layoutX="1211.0" layoutY="192.0" prefHeight="548.0" prefWidth="195.0">
       <columns>
-         <TableColumn prefWidth="190.0" text="C1" />
+         <TableColumn prefWidth="190.0" text="Usuarios" />
       </columns>
    </TableView>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2da2bd" height="118.0" layoutX="70.0" layoutY="753.0" stroke="BLACK" strokeType="INSIDE" width="1080.0" />
@@ -60,7 +60,7 @@
          <TableColumn minWidth="0.0" prefWidth="688.0" text="C2" />
       </columns>
    </TableView>
-   <Button layoutX="88.0" layoutY="48.0" prefHeight="76.0" prefWidth="88.0" style="-fx-background-color: #83def2;" stylesheets="@Styles/Login.css" text="←">
+   <Button fx:id="backButton" layoutX="88.0" layoutY="48.0" prefHeight="76.0" prefWidth="88.0" style="-fx-background-color: #83def2;" stylesheets="@Styles/Login.css" text="←" onAction="#retrocederAVistaAnterior">
       <font>
          <Font name="Arial" size="24.0" />
       </font>
