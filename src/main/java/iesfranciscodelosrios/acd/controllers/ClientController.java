@@ -10,6 +10,7 @@ import jakarta.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ClientController {
@@ -22,10 +23,9 @@ public class ClientController {
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
         try {
-            File file = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            Users users = (Users) unmarshaller.unmarshal(file);
+            Users users = (Users) unmarshaller.unmarshal(xmlFile);
 
             if (users != null) {
                 List<User> userList = users.getUsers();
@@ -45,8 +45,8 @@ public class ClientController {
         return result;
     }
 
-    public ArrayList<User> loadUsersAndAddNewUser(User newUser) {
-        ArrayList<User> updatedUserList = new ArrayList<>();
+    public Users loadUsersAndAddNewUser(User newUser) {
+        Users updatedUsers = new Users();
 
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
@@ -56,24 +56,24 @@ public class ClientController {
                 Users users = (Users) unmarshaller.unmarshal(xmlFile);
 
                 if (users != null) {
-                    ArrayList<User> existingUsers = users.getUsers();
+                    List<User> existingUsers = users.getUsers();
                     if (existingUsers != null) {
-                        updatedUserList.addAll(existingUsers);
+                        updatedUsers.getUsers().addAll(existingUsers);
                     }
                 }
             }
 
             // Agregar el nuevo usuario
-            updatedUserList.add(newUser);
+            updatedUsers.getUsers().add(newUser);
 
         } catch (JAXBException e) {
             e.printStackTrace();
         }
 
-        return updatedUserList;
+        return updatedUsers;
     }
 
-    public void saveUsersToXml(ArrayList<User> users) {
+    public void saveUsersToXml(Users users) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
@@ -94,8 +94,6 @@ public class ClientController {
     public void connectToServer(User client) {
         try {
             Socket clientSocket = new Socket(serverIp, serverPort);
-            //out = new PrintWriter(clientSocket.getOutputStream(), true);
-            //in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             if(isUserLogedIn(client.getNickname()) == false) {
                 //Enviar la solicitud al servidor

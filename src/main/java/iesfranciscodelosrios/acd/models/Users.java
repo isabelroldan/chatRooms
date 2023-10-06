@@ -4,16 +4,16 @@ import jakarta.xml.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-@XmlRootElement(name = "users")
+@XmlRootElement(name = "Users")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Users implements Serializable {
 
-    @XmlElementWrapper(name = "users")
-    @XmlElement(name = "user")
-    ArrayList<User> users = new ArrayList<>();
+    @XmlElement(name = "User", type = User.class)
+    List<User> users = new ArrayList<>();
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 

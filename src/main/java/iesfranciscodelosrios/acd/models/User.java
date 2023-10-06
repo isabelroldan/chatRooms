@@ -6,16 +6,16 @@ import java.io.Serializable;
 import java.util.List;
 
 
-@XmlRootElement(name = "user")
+@XmlRootElement(name = "User")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User implements Serializable {
+    @XmlElement(name = "Nickname")
     private String nickname; // Nombre de usuario
-    private String ipAddress; // Dirección IP del usuario
+    @XmlElement(name = "CurrentRoom")
     private Integer currentRoom; // Sala actual del usuario
 
     public User(String nickname, String ipAddress, Integer currentRoom) {
         this.nickname = nickname;
-        this.ipAddress = ipAddress;
         this.currentRoom = currentRoom;
     }
 
@@ -27,17 +27,9 @@ public class User implements Serializable {
     public String getNickname() {
         return nickname;
     }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    // Getter para obtener la dirección IP del usuario
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     // Getter para obtener la sala actual del usuario
