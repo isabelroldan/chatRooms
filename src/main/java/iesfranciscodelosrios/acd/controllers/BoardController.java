@@ -344,4 +344,64 @@ public class BoardController {
         }
     }
 
+    @FXML
+    private void eliminarUsuario() {
+        // Obtén el nickname del usuario actual
+        String nickname = nicknameLabel.getText();
+
+        if (nickname != null && !nickname.isEmpty()) {
+            // Elimina al usuario del archivo XML de usuarios
+            eliminarUsuarioDelXML(nickname);
+
+            // Cierra la ventana actual
+            Stage stage = (Stage) sala1Rect.getScene().getWindow();
+            stage.close();
+        } else {
+            // Maneja el caso en el que no se pueda obtener el nickname
+            System.out.println("No se pudo obtener el nickname del usuario.");
+        }
+    }
+
+    private void eliminarUsuarioDelXML(String nickname) {
+        try {
+            // Cargar el archivo XML de usuarios
+            File file = new File(RUTA_XML_USUARIOS);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(file);
+
+            // Obtener la lista de nodos de usuarios dentro de <Users>
+            NodeList userList = doc.getElementsByTagName("User");
+
+            // Iterar a través de los nodos de usuario para encontrar y eliminar al usuario por su nickname
+            for (int i = 0; i < userList.getLength(); i++) {
+                Node userNode = userList.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+
+                    // Obtener el nombre de usuario (nickname) del nodo actual
+                    String nombreUsuario = userElement.getElementsByTagName("Nickname").item(0).getTextContent();
+
+                    // Comparar el nombre de usuario actual con el nombre de usuario actualmente conectado
+                    if (nombreUsuario.equals(nickname)) {
+                        // Eliminar el nodo de usuario actual
+                        userNode.getParentNode().removeChild(userNode);
+
+                        // Guardar los cambios en el archivo XML
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        DOMSource source = new DOMSource(doc);
+                        StreamResult result = new StreamResult(file);
+                        transformer.transform(source, result);
+
+                        // Salir del bucle después de eliminar al usuario
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
