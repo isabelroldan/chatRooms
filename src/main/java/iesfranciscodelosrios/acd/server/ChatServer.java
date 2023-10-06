@@ -28,7 +28,7 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "172.16.16.108";
+    String serverIp = "192.168.18.13";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */
@@ -57,7 +57,7 @@ public class ChatServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Conexión aceptada");
                 // Enviar el contenido del XML al cliente
-                sendXmlFile(clientSocket);
+              //  sendXmlFile(clientSocket);
 
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (ClientHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.

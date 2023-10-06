@@ -2,12 +2,12 @@ package iesfranciscodelosrios.acd.server;
 
 import iesfranciscodelosrios.acd.models.User;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler extends Thread  {
+    private static final String XML_FILE_PATH = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
+
     private Socket clientSocket;
     private ChatServer chatServer;
 
@@ -19,8 +19,13 @@ public class ClientHandler extends Thread  {
     public void run() {
         try {
             // Crear flujos de entrada y salida para comunicarse con el cliente
-            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            InputStream in = clientSocket.getInputStream();
+            OutputStream out = clientSocket.getOutputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(in);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+
+            //envío xml
+            sendXmlFile(out);
 
             // Recibir el objeto User del cliente
             User receivedUser = (User) objectInputStream.readObject();
@@ -29,12 +34,31 @@ public class ClientHandler extends Thread  {
             // Guardar el usuario en el archivo XML
             ChatServer.saveUserInXml(receivedUser);
 
-            //Cerrar flujos
-            objectInputStream.close();
-            objectOutputStream.close();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void sendXmlFile(OutputStream out) throws IOException {
+        File xmlFile = new File(XML_FILE_PATH);
+        if (!xmlFile.exists()) {
+            System.err.println("El archivo XML no existe en la ruta especificada.");
+            return;
+        }
+
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(xmlFile))) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            // Leer del archivo y enviar al cliente en bloques
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+                out.flush();
+            }
+
+            System.out.println("Archivo XML enviado al cliente.");
         }
     }
 }

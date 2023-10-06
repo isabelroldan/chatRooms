@@ -47,7 +47,7 @@
             <Font name="Arial" size="32.0" />
         </font>
     </Label>
-   <Label fx:id="room1ConnectedLabel" layoutX="1223.0" layoutY="247.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room1ConnectedLabel" layoutX="1243.0" layoutY="240.0" prefHeight="30.0" prefWidth="70.0" text="0">
       <font>
          <Font name="Arial" size="32.0" />
       </font>
@@ -75,7 +75,7 @@
          <Font name="Arial" size="24.0" />
       </font>
    </Label>
-   <Label fx:id="room1ConnectedLabel2" layoutX="1219.0" layoutY="373.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room2ConnectedLabel" layoutX="1243.0" layoutY="368.0" prefHeight="30.0" prefWidth="70.0" text="0">
       <font>
          <Font name="Arial" size="32.0" />
       </font>
@@ -85,7 +85,7 @@
          <Font name="Arial" size="24.0" />
       </font>
    </Label>
-   <Label fx:id="room1ConnectedLabel1" layoutX="1221.0" layoutY="507.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room3ConnectedLabel" layoutX="1243.0" layoutY="500.0" prefHeight="30.0" prefWidth="70.0" text="0">
       <font>
          <Font name="Arial" size="32.0" />
       </font>
@@ -95,7 +95,7 @@
          <Font name="Arial" size="24.0" />
       </font>
    </Label>
-   <Label fx:id="room1ConnectedLabel3" layoutX="1221.0" layoutY="634.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room4ConnectedLabel" layoutX="1243.0" layoutY="627.0" prefHeight="30.0" prefWidth="70.0" text="0">
       <font>
          <Font name="Arial" size="32.0" />
       </font>
@@ -105,7 +105,7 @@
          <Font name="Arial" size="24.0" />
       </font>
    </Label>
-   <Label fx:id="room1ConnectedLabel4" layoutX="1221.0" layoutY="772.0" prefHeight="30.0" prefWidth="70.0" text="Numero">
+   <Label fx:id="room5ConnectedLabel" layoutX="1243.0" layoutY="765.0" prefHeight="30.0" prefWidth="70.0" text="0">
       <font>
          <Font name="Arial" size="32.0" />
       </font>
