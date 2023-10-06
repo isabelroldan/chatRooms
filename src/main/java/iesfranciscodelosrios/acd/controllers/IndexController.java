@@ -30,16 +30,22 @@ public class IndexController {
     public IndexController() throws IOException {
     }
 
+    /**
+     * When you click on the button, it should return if the nickname has already been used and if not,
+     * it will let you continue to the next view. Also passes the nickname to the other view
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void ButtonJoin(ActionEvent event) throws IOException {
-        // Obtener el nickname ingresado por el usuario
+        //  Get the nickname entered by the user
         client.setNickname(nicknameTextField.getText());
 
-        //Conectar al servidor
-        c.connectToServer(client);//Modificarlo para la interfaz grafica
+        //Connect to server
+        c.connectToServer(client);//Modify it for the graphical interface
 
-        // Verificar si el nickname está en uso
-        // Mostrar un mensaje en el Label según el resultado
+        // Check if the nickname is in use
+        //Show a message in the Label according to the result
         if (c.isUserLogedIn(client.getNickname())) {
             nicknameInUseLabel.setText("Nickname no disponible elija otro");
             nicknameInUseLabel.setTextFill(Color.RED);
@@ -48,20 +54,17 @@ public class IndexController {
         } else {
             nicknameInUseLabel.setText("Nickname disponible.");
             nicknameInUseLabel.setVisible(true);
-            //Guardar el usuario en XML en el servidor
 
-            //c.saveUserToXml(client);
-            c.saveUserToXml(client);//Crear este metodo
+            //Save user in XML on server
+            c.saveUserToXml(client);
 
-            // Obtener el nickname ingresado por el usuario
-            client.setNickname(nicknameTextField.getText());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/board.fxml"));
             Parent root = loader.load();
             BoardController boardController = loader.getController();
             boardController.setNickname(client.getNickname());
 
-            // Establecer la vista cargada como raíz de la aplicación
+            // Set the loaded view as application root
             App.setRoot(root);
 
         }
