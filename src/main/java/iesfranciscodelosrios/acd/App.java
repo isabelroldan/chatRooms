@@ -16,7 +16,7 @@ public class App extends Application {
     private static Scene scene;
 
     /**
-     * Método para iniciar la aplicación en interfaz gráfica
+     * Method to start the application in graphical interface
      * @param stage
      * @throws IOException
      */
@@ -29,7 +29,7 @@ public class App extends Application {
     }
 
     /**
-     * Carga el fxml
+     * Load the fxml
      * @throws IOException
      */
     public static void setRoot(Parent root) {
@@ -37,9 +37,9 @@ public class App extends Application {
     }
 
     /**
-     * Carga el la vista en fxml
+     * Load the view in fxml
      * @param fxml
-     * @return Vista fxml
+     * @return fxml view
      * @throws IOException
      */
     private static Parent loadFXML(String fxml) throws IOException {
@@ -48,7 +48,7 @@ public class App extends Application {
     }
 
     /**
-     * Lanzamiento de la App
+     * App launch
      * @param args
      */
     public static void main(String[] args) {

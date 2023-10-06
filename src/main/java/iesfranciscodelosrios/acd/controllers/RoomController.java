@@ -54,19 +54,19 @@ public class RoomController {
 
     public void initialize() {
         mensajeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Actualizar la etiqueta con el texto del TextField
+            // Update the label with the text from the TextField
             mensajeTextField.setText(newValue);
         });
 
 
-        // Carga el archivo XML de usuarios y busca el número de personas en esta sala
+        //Load the users XML file and find the number of people in this room
         int numeroPersonasEnSala = obtenerNumeroPersonasEnSala(numeroSala);
 
-        // Actualiza la vista con el número de personas en esta sala
+        // Updates the view with the number of people in this room
         numPersonasLabel.setText(String.valueOf(numeroPersonasEnSala));
 
 
-        // Inicializa y configura el executorService para ejecutar la actualización cada 5 segundos (ajusta el intervalo según tus necesidades)
+        // Initialize and configure the executorService to run the update every 5 seconds (adjust the interval according to your needs)
         executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(this::actualizarUsuariosEnSala, 0, 5, TimeUnit.SECONDS);
 
@@ -80,30 +80,36 @@ public class RoomController {
         numeroSalaLabel.setText(String.valueOf(numeroSala));
     }
 
+    /**
+     *
+     Gets the number of people per room
+     * @param numeroSala
+     * @return number of person conect to this room
+     */
     private int obtenerNumeroPersonasEnSala(int numeroSala) {
         try {
-            // Cargar el archivo XML de usuarios
+            //Upload the users XML file
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Obtener la lista de nodos de usuario
+            //Get list of user nodes
             NodeList userList = doc.getElementsByTagName("user");
 
-            // Inicializar el contador para el número de personas en la sala
+            // Initialize the counter for the number of people in the room
             int contadorPersonas = 0;
 
-            // Iterar a través de los nodos de usuario para contar aquellos en la sala especificada
+            //Iterate through user nodes to count those in the specified room
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Obtener el número de sala del nodo actual
+                    // Get the room number of the current node
                     String salaUsuario = userElement.getElementsByTagName("room").item(0).getTextContent();
 
-                    // Verificar si esta sala coincide con la sala especificada
+                    // Check if this room matches the specified room
                     if (Integer.parseInt(salaUsuario) == numeroSala) {
                         contadorPersonas++;
                     }
@@ -112,42 +118,49 @@ public class RoomController {
 
             return contadorPersonas;
         } catch (Exception e) {
-            // Manejo de excepciones en caso de error al cargar el archivo XML, etc.
             e.printStackTrace();
-            // En caso de error, devolver 0 como número de personas
             return 0;
         }
     }
 
+    /**
+     *
+     Update users in the room
+     */
     private void actualizarUsuariosEnSala() {
-        // Limpia la TableView antes de cargar los nuevos datos
+        //Clear the TableView before loading new data
         usersTableView.getItems().clear();
 
-        // Vuelve a cargar los nombres de usuarios en la sala
+        //Reload usernames into the room
         cargarNombresUsuariosEnSala(numeroSala);
     }
 
+    /**
+     *
+     Load the user's nickname in the table on the right
+     * @param numeroSala
+     */
     private void cargarNombresUsuariosEnSala(int numeroSala) {
         try {
-            // Cargar el archivo XML de usuarios
+            //Upload the users XML file
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Obtener la lista de nodos de usuario
+            // Get list of user nodes
             NodeList userList = doc.getElementsByTagName("user");
 
-            // Crear una lista para almacenar los nombres de los usuarios en la sala
+            // Create a list to store the names of users in the room
             List<String> usuariosEnSala = new ArrayList<>();
 
-            // Iterar a través de los nodos de usuario para obtener los nombres de los usuarios en la sala especificada
+            //Iterate through the user nodes to get the names of the users in the specified room
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Verificar si esta sala coincide con la sala especificada
+                    // Check if this room matches the specified room
                     Node roomNode = userElement.getElementsByTagName("room").item(0);
                     if (roomNode != null && roomNode.getTextContent() != null) {
                         String salaUsuario = roomNode.getTextContent();
@@ -162,49 +175,54 @@ public class RoomController {
                 }
             }
 
-            // Limpiar la TableView antes de agregar los nuevos datos
+            //Clear the TableView before adding the new data
             usersTableView.getItems().clear();
 
-            // Agregar los nombres de los usuarios a la TableView
+            //Add user names to the TableView
             usersTableView.getItems().addAll(usuariosEnSala);
         } catch (Exception e) {
-            // Manejo de excepciones en caso de error al cargar el archivo XML, etc.
             e.printStackTrace();
         }
     }
 
-    // Método para retroceder a la vista anterior
+    /**
+     * Method to go back to the previous view
+     */
     public void retrocederAVistaAnterior() {
-        // Elimina la sala actual del usuario actual
+        //Delete the current room of the current user
         eliminarSalaDelUsuarioActual();
 
-        // Obtén la ventana actual
+        //Get the current window
         Stage stage = (Stage) backButton.getScene().getWindow();
 
         try {
-            // Carga la vista anterior (reemplaza "VistaAnterior.fxml" con el nombre de tu archivo FXML anterior)
+            //Load the previous view (replace "PreviousView.fxml" with the name of your previous FXML file)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/board.fxml"));
             Parent root = loader.load();
 
-            // Obtén el controlador de la vista "Board"
+            //Get the "Board" view controller
             BoardController boardController = loader.getController();
 
-            // Establece el nickname en el controlador de la vista "board"
+            // Set the nickname in the "board" view controller
             boardController.setNickname(nicknameLabel.getText());
 
-            // Configura la nueva escena con la vista "board"
+            //Set up the new scene with the "board" view
             Scene scene = new Scene(root);
 
-            // Establece la nueva escena en el escenario
+            // Set the new scene on the stage
             stage.setScene(scene);
 
-            // Muestra la nueva vista "board"
+            // Shows the new "board" view
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     Delete the room that appears in the xml document
+     */
     private void eliminarSalaDelUsuarioActual() {
         try {
             File file = new File(RUTA_XML_USUARIOS);
@@ -215,13 +233,13 @@ public class RoomController {
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
 
-            // Busca el usuario con el nickname actual
+            //Search for the user with the current nickname
             String nicknameActual = nicknameLabel.getText();
             String expression = String.format("//user[nickname='%s']", nicknameActual);
             XPathExpression xPathExpr = xpath.compile(expression);
             Node userNode = (Node) xPathExpr.evaluate(doc, XPathConstants.NODE);
 
-            // Si se encuentra el usuario, elimina la etiqueta <room> de ese usuario
+            //If the user is found, remove that user's <room> tag
             if (userNode != null) {
                 Element userElement = (Element) userNode;
                 NodeList roomNodes = userElement.getElementsByTagName("room");
@@ -231,7 +249,7 @@ public class RoomController {
                     userElement.removeChild(roomNode);
                 }
 
-                // Guarda los cambios en el archivo XML
+                // Save changes to the XML file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");

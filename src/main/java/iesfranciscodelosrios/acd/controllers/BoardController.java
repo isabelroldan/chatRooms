@@ -72,58 +72,66 @@ public class BoardController {
 
     private Rectangle rectanguloSeleccionado = null;
 
-    // Ruta al archivo XML de usuarios
+    // Path to the XML file for users
     private static final String RUTA_XML_USUARIOS = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
 
     @FXML
     public void initialize() {
-        // Agrega un controlador de eventos de clic para cada rectángulo
+        // Add a click event handler for each rectangle
         sala1Rect.setOnMouseClicked(this::cambiarColorRectangulo);
         sala2Rect.setOnMouseClicked(this::cambiarColorRectangulo);
         sala3Rect.setOnMouseClicked(this::cambiarColorRectangulo);
         sala4Rect.setOnMouseClicked(this::cambiarColorRectangulo);
         sala5Rect.setOnMouseClicked(this::cambiarColorRectangulo);
 
-        //Cargar nombres de salas desde el archivo XML
+        // Load room names from the XML file
         loadRoomNamesFromXML();
 
-        // Actualizar el número de personas conectadas al inicializar la vista
+        // Update the number of connected users when initializing the view
         actualizarNumeroConectados();
     }
 
+    /**
+     * Set the nickname label with the provided nickname.
+     *
+     * @param nickname The nickname to display.
+     */
     public void setNickname(String nickname) {
         nicknameLabel.setText(nickname);
     }
 
-    // Método para cambiar el color del rectángulo cuando se hace clic
+    // Method to change the color of the rectangle when clicked
     private void cambiarColorRectangulo(MouseEvent event) {
         Rectangle rectangulo = (Rectangle) event.getSource();
 
         if (rectangulo != rectanguloSeleccionado) {
-            // Si se hace clic en un rectángulo diferente al seleccionado, lo seleccionamos
+            // If a different rectangle is clicked, select it
             if (rectanguloSeleccionado != null) {
-                rectanguloSeleccionado.setFill(Color.WHITE); // Deseleccionamos el rectángulo previamente seleccionado
+                rectanguloSeleccionado.setFill(Color.WHITE); // Deselect the previously selected rectangle
             }
             rectanguloSeleccionado = rectangulo;
-            rectangulo.setFill(Color.LIGHTGRAY); // Seleccionamos el nuevo rectángulo
+            rectangulo.setFill(Color.LIGHTGRAY); // Select the new rectangle
         } else {
-            // Si se hace clic en el rectángulo ya seleccionado, lo deseleccionamos
+            // If the already selected rectangle is clicked again, deselect it
             rectanguloSeleccionado.setFill(Color.WHITE);
             rectanguloSeleccionado = null;
         }
     }
 
+    /**
+     * Load the names of room
+     */
     private void loadRoomNamesFromXML() {
         try {
-            // Cargar el archivo XML
+            // Load the XML file
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse("src/main/resources/iesfranciscodelosrios/acd/Xmls/Rooms.xml");
 
-            // Obtener la lista de elementos de sala
+            // Get the list of room elements
             NodeList boards = doc.getElementsByTagName("room");
 
-            // Asignar nombres de salas a las etiquetas en la vista
+            // Assign room names to the labels in the view
             room1Label.setText(boards.item(0).getTextContent());
             room2Label.setText(boards.item(1).getTextContent());
             room3Label.setText(boards.item(2).getTextContent());
@@ -134,41 +142,45 @@ public class BoardController {
         }
     }
 
-    // Este método obtendrá el número de personas conectadas a varias salas
+    /**
+     * This method will get the number of users connected to various rooms
+     * @param nombresSalas
+     * @return Number of person conect
+     */
     public Map<String, Integer> obtenerNumeroConectados(List<String> nombresSalas) {
         Map<String, Integer> numeroConectadosPorSala = new HashMap<>();
 
         try {
-            // Cargar el archivo XML de usuarios
+            // Load the users XML file
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Obtener la lista de nodos de usuario
+            // Get list of user nodes
             NodeList userList = doc.getElementsByTagName("user");
 
-            // Inicializar el contador para cada sala
+            // Initialize the counter for each room
             for (String nombreSala : nombresSalas) {
                 numeroConectadosPorSala.put(nombreSala, 0);
             }
 
-            // Recorrer la lista de usuarios y contar aquellos conectados a las salas especificadas
+            //Scroll through the list of users and count those connected to the specified rooms
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Obtener el nombre de las salas a las que está conectado este usuario
+                    //Get the name of the rooms this user is connected to
                     NodeList roomList = userElement.getElementsByTagName("room");
                     for (int j = 0; j < roomList.getLength(); j++) {
                         Node roomNode = roomList.item(j);
                         if (roomNode.getNodeType() == Node.ELEMENT_NODE) {
                             String salaUsuario = roomNode.getTextContent();
 
-                            // Verificar si esta sala está en la lista de salas proporcionada
+                            // Check if this room is in the provided room list
                             if (nombresSalas.contains(salaUsuario)) {
-                                // Incrementar el contador para esta sala
+                                // Increase the counter for this room
                                 int contadorSala = numeroConectadosPorSala.get(salaUsuario);
                                 numeroConectadosPorSala.put(salaUsuario, contadorSala + 1);
                             }
@@ -179,9 +191,9 @@ public class BoardController {
 
             return numeroConectadosPorSala;
         } catch (Exception e) {
-            // Manejo de excepciones en caso de error al cargar el archivo XML, etc.
+            // Exception handling in case of error loading XML file, etc.
             e.printStackTrace();
-            // Devolver 0 para todas las salas en caso de error
+            // Return 0 for all rooms on error
             for (String nombreSala : nombresSalas) {
                 numeroConectadosPorSala.put(nombreSala, 0);
             }
@@ -189,11 +201,15 @@ public class BoardController {
         }
     }
 
+    /**
+     *
+     Update numbers of connected people
+     */
     public void actualizarNumeroConectados() {
         List<String> nombresSalas = Arrays.asList("Room 1", "Room 2", "Room 3", "Room 4", "Room 5");
         Map<String, Integer> numeroConectadosPorSala = obtenerNumeroConectados(nombresSalas);
 
-        // Actualizar las etiquetas con el número de personas conectadas
+        // Update tags with the number of people connected
         room1ConnectedLabel.setText(String.valueOf(numeroConectadosPorSala.get("Room 1")));
         room2ConnectedLabel.setText(String.valueOf(numeroConectadosPorSala.get("Room 2")));
         room3ConnectedLabel.setText(String.valueOf(numeroConectadosPorSala.get("Room 3")));
@@ -201,40 +217,44 @@ public class BoardController {
         room5ConnectedLabel.setText(String.valueOf(numeroConectadosPorSala.get("Room 5")));
     }
 
+    /**
+     *
+     Saves the room to which you have connected in the XML
+     */
     @FXML
     private void unirseASala() {
         if (rectanguloSeleccionado != null) {
             int nombreSala = obtenerNumeroSala(rectanguloSeleccionado);
             agregarUsuarioASala(String.valueOf(nombreSala));
 
-            // Obtén la escena actual
+            // Get the current scene
             Scene scene = rectanguloSeleccionado.getScene();
 
-            // Cargar la vista de sala (room.fxml) y establecer el controlador
+            //Load the room view (room.fxml) and set the controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/room.fxml"));
             try {
-                // Cargar la vista "room"
+                // Load the "room" view
                 Parent roomParent = loader.load();
 
-                // Obtener el controlador de la vista "room"
+                //Get the "room" view controller
                 RoomController roomController = loader.getController();
 
-                // Pasar el nickname al controlador de la vista "room"
+                //Pass the nickname to the "room" view controller
                 roomController.setNickname(nicknameLabel.getText());
 
-                // Pasar solo el número de la sala al controlador de la vista "room"
+                // Pass the nickname to the "room" view controller
                 roomController.setNumeroSala(nombreSala);
 
-                // Crear una nueva escena con la vista "room"
+                // Create a new scene with the "room" view
                 Scene roomScene = new Scene(roomParent);
 
-                // Obtener el escenario actual
+                //Get the current scenario
                 Stage stage = (Stage) sala1Rect.getScene().getWindow();
 
-                // Establecer la nueva escena en el escenario
+                // Set the new scene on the stage
                 stage.setScene(roomScene);
 
-                // Mostrar la nueva vista "room"
+                //Show the new "room" view
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -242,11 +262,16 @@ public class BoardController {
         }
     }
 
+    /**
+     * Get the room number
+     * @param rectangulo contends id
+     * @return number room
+     */
     private int obtenerNumeroSala(Rectangle rectangulo) {
-        // Obtener el ID del rectángulo
+        // Get the ID of the rectangle
         String id = rectangulo.getId();
 
-        // Verificar el ID y devolver el nombre de la sala correspondiente
+        // Verify ID and return corresponding room name
         if ("sala1Rect".equals(id)) {
             return 1;
         } else if ("sala2Rect".equals(id)) {
@@ -258,54 +283,58 @@ public class BoardController {
         } else if ("sala5Rect".equals(id)) {
             return 5;
         } else {
-            // Si el ID no coincide con ningún rectángulo conocido, puedes devolver un valor predeterminado o manejarlo según tus necesidades.
+
             return 0;
         }
     }
 
+    /**
+     *
+     Add in the xml the number of the room to which you have connected
+     * @param nombreSala
+     */
     private void agregarUsuarioASala(String nombreSala) {
         try {
-            // Cargar el archivo XML de usuarios
+            // Upload the users XML file
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Obtener la lista de nodos de usuario
+            // Get list of user nodes
             NodeList userList = doc.getElementsByTagName("user");
 
-            // Iterar a través de los nodos de usuario para encontrar el usuario actual (basado en su nombre de usuario)
+            // Iterate through the user nodes to find the current user (based on their username)
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Obtener el nombre de usuario del nodo actual
+                    //Get username of current node
                     String nombreUsuario = userElement.getElementsByTagName("nickname").item(0).getTextContent();
 
-                    // Comparar el nombre de usuario actual con el nombre de usuario del usuario que está en sesión
+                    // Compare the current username with the username of the currently logged in user
                     if (nombreUsuario.equals(nicknameLabel.getText())) {
-                        // Crear un nuevo nodo "room" para la sala y asignarle el nombre de la sala
+                        //Create a new "room" node for the room and assign it the name of the room
                         Element roomElement = doc.createElement("room");
                         roomElement.appendChild(doc.createTextNode(nombreSala));
 
-                        // Agregar la sala al nodo del usuario
+                        //Add the room to the user node
                         userElement.appendChild(roomElement);
 
-                        // Guardar los cambios en el archivo XML
+                        // Save changes to XML file
                         TransformerFactory transformerFactory = TransformerFactory.newInstance();
                         Transformer transformer = transformerFactory.newTransformer();
                         DOMSource source = new DOMSource(doc);
                         StreamResult result = new StreamResult(file);
                         transformer.transform(source, result);
 
-                        // Salir del bucle después de encontrar el usuario actual y agregar la sala
+                        // Exit loop after finding current user and adding room
                         break;
                     }
                 }
             }
         } catch (Exception e) {
-            // Manejo de excepciones en caso de error al cargar o modificar el archivo XML, etc.
             e.printStackTrace();
         }
     }
