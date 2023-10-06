@@ -56,8 +56,6 @@ public class ChatServer {
             while (true) { //Entra en un bucle infinito para aceptar conexiones entrantes de clientes.
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Conexión aceptada");
-                // Enviar el contenido del XML al cliente
-              //  sendXmlFile(clientSocket);
 
                 // Crea un nuevo hilo o clase para manejar la comunicación con el cliente (ClientHandler)
                 // y pasa el socket del cliente y una referencia al servidor al nuevo hilo o clase.
@@ -74,89 +72,34 @@ public class ChatServer {
         }
     }
 
-    private static void sendXmlFile(Socket clientSocket) throws IOException {
-        File xmlFile = new File(XML_FILE_PATH);
-        if (!xmlFile.exists()) {
-            System.err.println("El archivo XML no existe en la ruta especificada.");
-            return;
-        }
-
-        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(xmlFile));
-             OutputStream os = clientSocket.getOutputStream()) {
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            // Leer del archivo y enviar al cliente en bloques
-            while ((bytesRead = bis.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-                os.flush();
-            }
-
-            System.out.println("Archivo XML enviado al cliente.");
-        }
-    }
-
     public static void saveUserInXml(User user) {
         try {
-            // Leer el archivo XML existente
-            File xmlFile = new File(XML_FILE_PATH);
+            File file = new File(XML_FILE_PATH);
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            Users users = (Users) unmarshaller.unmarshal(xmlFile);
 
-            // Agregar el nuevo usuario
-            if (users != null) {
-                ArrayList<User> usersList = users.getUsers();
-                usersList.add(user);
-                users.setUsers(usersList);
+            Users users;
+            if (file.exists()) {
+                // Si el archivo ya existe, carga los usuarios existentes
+                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                users = (Users) unmarshaller.unmarshal(file);
+            } else {
+                // Si el archivo no existe, crea una nueva lista de usuarios
+                users = new Users();
             }
 
-            // Marshalling y guardar en el archivo XML
+            // Agrega el nuevo usuario a la lista
+            users.getUsers().add(user);
+
+            // Guarda la lista actualizada en el archivo XML
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(users, xmlFile);
+            marshaller.marshal(users, new FileWriter(file));
 
             System.out.println("Usuario guardado exitosamente.");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public class ClientHandlerAux extends Thread {
-        private Socket clientSocket;
-
-        @Override
-        public void run() {
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream())) {
-                // Recibir el objeto User del cliente
-                User receivedUser = (User) objectInputStream.readObject();
-                System.out.println("Usuario recibido del cliente: " + receivedUser);
-
-                // Guardar el usuario en el archivo XML
-                saveUserInXml(receivedUser);
-
-                // Otros procesos
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    // Agrega un método para verificar si un nickname está en uso
-    public synchronized boolean isNicknameAvailable(String nickname) {
-        return usedNicknames.contains(nickname);
-    }
-
-    // Agrega un método para registrar un nuevo nickname
-    public synchronized void registerNickname(String nickname) {
-        usedNicknames.add(nickname);
-    }
-
-    // Agrega un método para retirar un nickname cuando un usuario se desconecta
-    public synchronized void unregisterNickname(String nickname) {
-        usedNicknames.remove(nickname);
     }
 
     /**

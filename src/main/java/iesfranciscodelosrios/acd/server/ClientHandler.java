@@ -7,6 +7,7 @@ import java.net.Socket;
 
 public class ClientHandler extends Thread  {
     private static final String XML_FILE_PATH = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
+    File xmlFile = new File(XML_FILE_PATH);
 
     private Socket clientSocket;
     private ChatServer chatServer;
@@ -25,7 +26,11 @@ public class ClientHandler extends Thread  {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
 
             //envío xml
-            sendXmlFile(out);
+            if (xmlFile.exists()){
+                sendXmlFile(out);
+            } else {
+                
+            }
 
             // Recibir el objeto User del cliente
             User receivedUser = (User) objectInputStream.readObject();

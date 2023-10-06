@@ -2,6 +2,7 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.App;
 import iesfranciscodelosrios.acd.models.User;
+import iesfranciscodelosrios.acd.models.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class IndexController {
 
@@ -24,7 +26,7 @@ public class IndexController {
     @FXML
     private Button joinButton;
 
-    private ArrayList<User> users = new ArrayList<User>(); //Rellenar esta lista para que funcione correctamente
+    private Users users; //Rellenar esta lista para que funcione correctamente
 
     private ClientController c = new ClientController();
 
