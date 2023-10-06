@@ -1,5 +1,6 @@
 package iesfranciscodelosrios.acd.controllers;
 
+import iesfranciscodelosrios.acd.models.Message;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -261,4 +262,6 @@ public class RoomController {
             e.printStackTrace();
         }
     }
+
+    private List<Message> messages = new ArrayList<>();
 }
