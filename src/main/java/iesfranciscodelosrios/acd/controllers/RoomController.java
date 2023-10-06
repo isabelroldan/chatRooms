@@ -3,6 +3,7 @@ package iesfranciscodelosrios.acd.controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -146,16 +147,23 @@ public class RoomController {
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Obtener el número de sala del nodo actual
-                    String salaUsuario = userElement.getElementsByTagName("room").item(0).getTextContent();
-
                     // Verificar si esta sala coincide con la sala especificada
-                    if (Integer.parseInt(salaUsuario) == numeroSala) {
-                        String nombreUsuario = userElement.getElementsByTagName("nickname").item(0).getTextContent();
-                        usuariosEnSala.add(nombreUsuario);
+                    Node roomNode = userElement.getElementsByTagName("room").item(0);
+                    if (roomNode != null && roomNode.getTextContent() != null) {
+                        String salaUsuario = roomNode.getTextContent();
+                        if (Integer.parseInt(salaUsuario) == numeroSala) {
+                            Node nicknameNode = userElement.getElementsByTagName("nickname").item(0);
+                            if (nicknameNode != null && nicknameNode.getTextContent() != null) {
+                                String nombreUsuario = nicknameNode.getTextContent();
+                                usuariosEnSala.add(nombreUsuario);
+                            }
+                        }
                     }
                 }
             }
+
+            // Limpiar la TableView antes de agregar los nuevos datos
+            usersTableView.getItems().clear();
 
             // Agregar los nombres de los usuarios a la TableView
             usersTableView.getItems().addAll(usuariosEnSala);
@@ -166,7 +174,7 @@ public class RoomController {
     }
 
     // Método para retroceder a la vista anterior
-    public  void retrocederAVistaAnterior() {
+    public void retrocederAVistaAnterior() {
         // Elimina la sala actual del usuario actual
         eliminarSalaDelUsuarioActual();
 
@@ -176,7 +184,22 @@ public class RoomController {
         try {
             // Carga la vista anterior (reemplaza "VistaAnterior.fxml" con el nombre de tu archivo FXML anterior)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/board.fxml"));
-            stage.setScene(new Scene(loader.load()));
+            Parent root = loader.load();
+
+            // Obtén el controlador de la vista "Board"
+            BoardController boardController = loader.getController();
+
+            // Establece el nickname en el controlador de la vista "board"
+            boardController.setNickname(nicknameLabel.getText());
+
+            // Configura la nueva escena con la vista "board"
+            Scene scene = new Scene(root);
+
+            // Establece la nueva escena en el escenario
+            stage.setScene(scene);
+
+            // Muestra la nueva vista "board"
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
