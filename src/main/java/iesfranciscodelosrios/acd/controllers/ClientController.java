@@ -92,7 +92,7 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.168.18.13";
+    protected String serverIp = "192.168.0.195";
     protected int serverPort = 8081;
 
     public void connectToServer(User client) {

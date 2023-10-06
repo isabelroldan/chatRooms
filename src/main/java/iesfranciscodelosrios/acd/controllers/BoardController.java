@@ -295,41 +295,46 @@ public class BoardController {
      */
     private void agregarUsuarioASala(String nombreSala) {
         try {
-            // Upload the users XML file
+            // Cargar el archivo XML de usuarios
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Get list of user nodes
-            NodeList userList = doc.getElementsByTagName("user");
+            // Obtener la lista de nodos de usuarios dentro de <Users>
+            NodeList userList = doc.getElementsByTagName("User");
 
-            // Iterate through the user nodes to find the current user (based on their username)
+            // Iterar a través de los nodos de usuario para encontrar el usuario por su nickname
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    //Get username of current node
-                    String nombreUsuario = userElement.getElementsByTagName("nickname").item(0).getTextContent();
+                    // Obtener el nombre de usuario (nickname) del nodo actual
+                    String nombreUsuario = userElement.getElementsByTagName("Nickname").item(0).getTextContent();
 
-                    // Compare the current username with the username of the currently logged in user
+                    // Comparar el nombre de usuario actual con el nombre de usuario actualmente conectado
                     if (nombreUsuario.equals(nicknameLabel.getText())) {
-                        //Create a new "room" node for the room and assign it the name of the room
-                        Element roomElement = doc.createElement("room");
-                        roomElement.appendChild(doc.createTextNode(nombreSala));
+                        // Verificar si el usuario ya tiene la etiqueta <room>
+                        NodeList roomList = userElement.getElementsByTagName("room");
+                        if (roomList.getLength() == 0) {
+                            // Si no tiene la etiqueta <room>, crearla y asignarle el nombre de sala
+                            Element roomElement = doc.createElement("room");
+                            roomElement.appendChild(doc.createTextNode(nombreSala));
+                            userElement.appendChild(roomElement);
 
-                        //Add the room to the user node
-                        userElement.appendChild(roomElement);
+                            // Guardar los cambios en el archivo XML
+                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                            Transformer transformer = transformerFactory.newTransformer();
+                            DOMSource source = new DOMSource(doc);
+                            StreamResult result = new StreamResult(file);
+                            transformer.transform(source, result);
+                        } else {
+                            // Si ya tiene la etiqueta <room>, simplemente actualizar su contenido
+                            roomList.item(0).setTextContent(nombreSala);
+                        }
 
-                        // Save changes to XML file
-                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                        Transformer transformer = transformerFactory.newTransformer();
-                        DOMSource source = new DOMSource(doc);
-                        StreamResult result = new StreamResult(file);
-                        transformer.transform(source, result);
-
-                        // Exit loop after finding current user and adding room
+                        // Salir del bucle después de encontrar al usuario y agregar/actualizar la sala
                         break;
                     }
                 }
