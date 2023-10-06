@@ -73,6 +73,10 @@ public class ClientController {
         return updatedUsers;
     }
 
+    /**
+     * Method that save the user provided to an XML file
+     * @param users
+     */
     public void saveUsersToXml(Users users) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
