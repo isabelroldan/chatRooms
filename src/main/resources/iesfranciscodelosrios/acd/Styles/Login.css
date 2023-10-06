@@ -1,8 +1,18 @@
 #background{
     -fx-background-color: #1b6170;
 }
-#button{
+.button{
     -fx-background-color: #2da2bd;
     -fx-text-alignment: center;
-    /*hacer bordes*/
+    -fx-border-radius: 10px;
+}
+
+.card{
+    -fx-border-radius: 10px;
+    -fx-border: none;
+}
+
+.fondos{
+    -fx-border-radius: 10px;
+    -fx-background-color: #83def2;
 }

@@ -4,10 +4,12 @@ import iesfranciscodelosrios.acd.models.User;
 
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientController {
@@ -15,6 +17,7 @@ public class ClientController {
     private PrintWriter out;
     private BufferedReader in;
     private Thread messageReceiverThread;
+    private File xmlFile = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
 
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
@@ -42,13 +45,40 @@ public class ClientController {
         return result;
     }
 
-    public void saveUserToXml(User user) {
+    public ArrayList<User> loadUsersAndAddNewUser(User newUser) {
+        ArrayList<User> updatedUserList = new ArrayList<>();
+
         try {
-            File file = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+            if (xmlFile.exists()) {
+                Users users = (Users) unmarshaller.unmarshal(xmlFile);
+
+                if (users != null) {
+                    ArrayList<User> existingUsers = users.getUsers();
+                    if (existingUsers != null) {
+                        updatedUserList.addAll(existingUsers);
+                    }
+                }
+            }
+
+            // Agregar el nuevo usuario
+            updatedUserList.add(newUser);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return updatedUserList;
+    }
+
+    public void saveUsersToXml(ArrayList<User> users) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Users.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(user, new FileWriter(file));
+            marshaller.marshal(users, new FileWriter(xmlFile)); //Crea el xml
             System.out.println("Usuario guardado exitosamente.");
 
         } catch (Exception e) {
@@ -64,8 +94,8 @@ public class ClientController {
     public void connectToServer(User client) {
         try {
             Socket clientSocket = new Socket(serverIp, serverPort);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            //out = new PrintWriter(clientSocket.getOutputStream(), true);
+            //in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             if(isUserLogedIn(client.getNickname()) == false) {
                 //Enviar la solicitud al servidor
@@ -80,9 +110,9 @@ public class ClientController {
     }
 
     private void sendUserToServer(Socket socket,User user) {
-        try {
+         try {
             // Enviar el objeto User al servidor
-            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
+           try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
                 objectOutputStream.writeObject(user);
                 objectOutputStream.flush();
                 System.out.println("User pushed to server to save it in the XML file");
