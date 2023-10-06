@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -211,16 +212,33 @@ public class BoardController {
 
             // Cargar la vista de sala (room.fxml) y establecer el controlador
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/room.fxml"));
-            Parent root;
             try {
-                root = loader.load();
+                // Cargar la vista "room"
+                Parent roomParent = loader.load();
+
+                // Obtener el controlador de la vista "room"
+                RoomController roomController = loader.getController();
+
+                // Pasar el nickname al controlador de la vista "room"
+                roomController.setNickname(nicknameLabel.getText());
+
+                // Pasar solo el número de la sala al controlador de la vista "room"
+                roomController.setNumeroSala(nombreSala);
+
+                // Crear una nueva escena con la vista "room"
+                Scene roomScene = new Scene(roomParent);
+
+                // Obtener el escenario actual
+                Stage stage = (Stage) sala1Rect.getScene().getWindow();
+
+                // Establecer la nueva escena en el escenario
+                stage.setScene(roomScene);
+
+                // Mostrar la nueva vista "room"
+                stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
-                return; // Manejar el error de carga de vista
             }
-
-            // Cambia la escena actual a la vista de sala
-            scene.setRoot(root);
         }
     }
 
