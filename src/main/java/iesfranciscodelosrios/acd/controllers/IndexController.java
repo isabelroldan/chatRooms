@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class IndexController {
 
@@ -22,6 +23,8 @@ public class IndexController {
 
     @FXML
     private Button joinButton;
+
+    private ArrayList<User> users = new ArrayList<User>(); //Rellenar esta lista para que funcione correctamente
 
     private ClientController c = new ClientController();
 
@@ -42,7 +45,7 @@ public class IndexController {
         client.setNickname(nicknameTextField.getText());
 
         //Connect to server
-        c.connectToServer(client);//Modify it for the graphical interface
+        c.connectToServer(client);
 
         // Check if the nickname is in use
         //Show a message in the Label according to the result
@@ -53,10 +56,15 @@ public class IndexController {
             c.disconnectFromServer();
         } else {
             nicknameInUseLabel.setText("Nickname disponible.");
+            nicknameInUseLabel.setTextFill(Color.GREEN);
             nicknameInUseLabel.setVisible(true);
 
-            //Save user in XML on server
-            c.saveUserToXml(client);
+
+            users = c.loadUsersAndAddNewUser(client);
+
+            //c.saveUserToXml(client);
+            c.saveUsersToXml(users);//Crear este metodo
+
 
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/iesfranciscodelosrios/acd/board.fxml"));
