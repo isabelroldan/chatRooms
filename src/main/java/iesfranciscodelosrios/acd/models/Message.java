@@ -3,28 +3,39 @@ package iesfranciscodelosrios.acd.models;
 import java.util.Date;
 
 public class Message {
-    private String sender;
-    private String content;
-    private Date shippingTime;
 
-    public Message(String sender, String content) {
-        this.sender = sender;
-        this.content = content;
-        this.shippingTime = new Date(); // La hora se establece automáticamente al crear el mensaje
+    private String nickname;
+    private String text;
+    private Date date;
+
+    public Message(String nickname, String text, Date date) {
+        this.nickname = nickname;
+        this.text = text;
+        this.date = date;
     }
 
-    // Getters para acceder a los atributos
-
-    public String getSender() {
-        return sender;
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getContent() {
-        return content;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public Date getTimestamp() {
-        return shippingTime;
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
 

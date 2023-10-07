@@ -1,7 +1,6 @@
 package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.User;
-
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -9,8 +8,6 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ClientController {

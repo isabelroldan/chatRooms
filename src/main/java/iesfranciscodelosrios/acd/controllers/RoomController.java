@@ -1,16 +1,20 @@
 package iesfranciscodelosrios.acd.controllers;
 
-import javafx.beans.property.SimpleStringProperty;
+import iesfranciscodelosrios.acd.models.Message;
+import iesfranciscodelosrios.acd.models.Messages;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -25,6 +29,7 @@ import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,9 +37,11 @@ import java.util.concurrent.TimeUnit;
 
 public class RoomController {
     @FXML
+    public Button buttonSend;
+    @FXML
     private Label nicknameLabel;
     @FXML
-    private TextField mensajeTextField;
+    private TextField messageTextField;
     @FXML
     private Label numPersonasLabel;
     @FXML
@@ -42,21 +49,44 @@ public class RoomController {
     @FXML
     private TableView<String> usersTableView;
     @FXML
+    private TableView<Message> messagesTableView; //Tabla del chat
+    @FXML
+    private TableColumn<Message, String> colNickname; //Columna para el Usuario que lo envia
+    @FXML
+    private TableColumn<Message, String> colText; //Columna para el texto
+    @FXML
+    private TableColumn<Message, Date> colDate; //Columna para la hora
+    @FXML
     private Button backButton; // Agrega el botón
+
+    private Messages messages; //Instancia de la clase messages
 
     private int numeroSala; // Agrega este atributo
     private static final String RUTA_XML_USUARIOS = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
+
+    private ObservableList<Message> messagesList;
 
     private String nickname;
 
     private ScheduledExecutorService executorService;
 
     public void initialize() {
-        mensajeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Actualizar la etiqueta con el texto del TextField
-            mensajeTextField.setText(newValue);
-        });
 
+        // Crear una ObservableList a partir de la lista de messages
+        messagesList = FXCollections.observableArrayList();
+
+        // Inicializa la tabla con las columnas
+        colNickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+        colText.setCellValueFactory(new PropertyValueFactory<>("text"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        // Asigna el ObservableList a la TableView para que sea su modelo
+        messagesTableView.setItems(messagesList);
+
+        messageTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Actualizar la etiqueta con el texto del TextField
+            messageTextField.setText(newValue);
+        });
 
         // Carga el archivo XML de usuarios y busca el número de personas en esta sala
         int numeroPersonasEnSala = obtenerNumeroPersonasEnSala(numeroSala);
@@ -64,11 +94,31 @@ public class RoomController {
         // Actualiza la vista con el número de personas en esta sala
         numPersonasLabel.setText(String.valueOf(numeroPersonasEnSala));
 
-
         // Inicializa y configura el executorService para ejecutar la actualización cada 5 segundos (ajusta el intervalo según tus necesidades)
         executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(this::actualizarUsuariosEnSala, 0, 5, TimeUnit.SECONDS);
+    }
 
+    public void setMsgTable(){
+        messagesList.setAll(messages.getMessages());
+        this.messagesTableView.setItems(messagesList);
+    }
+
+    @FXML
+    void SendMessageButton (ActionEvent event) throws IOException {
+        sendMessage();
+    }
+
+    public void sendMessage() {
+        String nickname = nicknameLabel.getText();
+        String text = messageTextField.getText();
+        Date date = new Date();
+
+        Message newMessage = new Message(nickname, text, date);
+
+        messagesList.add(newMessage);
+
+        messagesTableView.refresh();
     }
 
     public void setNickname(String nickname) {
