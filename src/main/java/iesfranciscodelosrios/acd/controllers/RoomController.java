@@ -1,7 +1,10 @@
 package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.Message;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +29,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -46,12 +51,26 @@ public class RoomController {
     @FXML
     private Button backButton; // Agrega el botón
 
+    @FXML
+    private TableView<Message> messageTableView;
+    @FXML
+    private TableColumn<Message, String> nicknameColumn;
+    @FXML
+    private TableColumn<Message, String> messageColumn;
+    @FXML
+    private TableColumn<Message, String> timestampColumn;
+
+    private ObservableList<Message> messages = FXCollections.observableArrayList();
+
     private int numeroSala; // Agrega este atributo
     private static final String RUTA_XML_USUARIOS = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
 
     private String nickname;
 
     private ScheduledExecutorService executorService;
+
+    // Cuando creas una instancia de ClientController, pasa la referencia del TableView
+    ClientController clientController = new ClientController(messageTableView);
 
     public void initialize() {
         mensajeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -70,6 +89,19 @@ public class RoomController {
         // Initialize and configure the executorService to run the update every 5 seconds (adjust the interval according to your needs)
         executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(this::actualizarUsuariosEnSala, 0, 5, TimeUnit.SECONDS);
+
+
+        // Configurar las columnas para mostrar los datos de los mensajes
+        nicknameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNickname()));
+        messageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
+        timestampColumn.setCellValueFactory(cellData -> {
+            LocalDateTime timestamp = cellData.getValue().getTimestamp();
+            String formattedTimestamp = timestamp.format(DateTimeFormatter.ofPattern("HH:mm:ss")); // Formatear como desees
+            return new SimpleStringProperty(formattedTimestamp);
+        });
+
+        // Asignar la lista de mensajes a la tabla
+        messageTableView.setItems(messages);
 
     }
 
@@ -234,21 +266,15 @@ public class RoomController {
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
 
-            //Search for the user with the current nickname
+            // Search for the user with the current nickname
             String nicknameActual = nicknameLabel.getText();
-            String expression = String.format("//user[nickname='%s']", nicknameActual);
+            String expression = String.format("//User[Nickname='%s']/room", nicknameActual);
             XPathExpression xPathExpr = xpath.compile(expression);
-            Node userNode = (Node) xPathExpr.evaluate(doc, XPathConstants.NODE);
+            Node roomNode = (Node) xPathExpr.evaluate(doc, XPathConstants.NODE);
 
-            //If the user is found, remove that user's <room> tag
-            if (userNode != null) {
-                Element userElement = (Element) userNode;
-                NodeList roomNodes = userElement.getElementsByTagName("room");
-
-                if (roomNodes.getLength() > 0) {
-                    Node roomNode = roomNodes.item(0);
-                    userElement.removeChild(roomNode);
-                }
+            // If the roomNode is found, remove it
+            if (roomNode != null) {
+                roomNode.getParentNode().removeChild(roomNode);
 
                 // Save changes to the XML file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -263,5 +289,34 @@ public class RoomController {
         }
     }
 
-    private List<Message> messages = new ArrayList<>();
+
+    // Método para agregar un mensaje a la lista de mensajes
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+
+    @FXML
+    public void enviarMensaje() {
+        // Obtén el contenido del mensaje desde el TextField
+        String contenidoMensaje = mensajeTextField.getText();
+
+        // Obtén el texto del nicknameLabel
+        String nicknameUsuario = nicknameLabel.getText();
+
+        // Obtén la hora actual
+        LocalDateTime horaEnvio = LocalDateTime.now();
+
+        // Crea un objeto Message con los datos
+        Message mensaje = new Message(nicknameUsuario, contenidoMensaje, horaEnvio);
+
+        // Agrega el mensaje a la lista de mensajes
+        //messages.add(mensaje);
+
+        // Limpia el TextField después de enviar el mensaje
+        mensajeTextField.clear();
+
+        // Actualiza el TableView para mostrar el nuevo mensaje
+        messageTableView.getItems().add(mensaje);
+    }
 }
