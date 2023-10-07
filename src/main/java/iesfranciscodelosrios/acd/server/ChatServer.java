@@ -10,6 +10,7 @@ import jakarta.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChatServer {
     /**
@@ -103,14 +104,19 @@ public class ChatServer {
         }
     }
 
+    private List<Message> messages = new CopyOnWriteArrayList<>();
 
-    private List<Message> messages = new ArrayList<>();
-
-    public void addMessage(Message message) {
+    public synchronized void addMessage(Message message) {
         messages.add(message);
     }
 
-    public void broadcastMessage(Message message) {
+    public synchronized List<Message> getMessages() {
+        return messages;
+    }
+
+    public synchronized void broadcastMessage(Message message) {
+        messages.add(message); // Agrega el mensaje a la lista de mensajes en el servidor
+
         for (ClientHandler clientHandler : clientHandlers) {
             clientHandler.sendMessageToClient(message);
         }
