@@ -1,95 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Users>
-        
+<?xml version="1.0" encoding="UTF-8"?><Users>
     <User>
-                
-        <Nickname>buu</Nickname>
-            
+        <Nickname>Isa</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>buu</Nickname>
-            
+        <Nickname>fran</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>murcielago</Nickname>
-            
-    </User>
-        
-    <User>
-                
-        <Nickname>murcielago</Nickname>
-            
-    </User>
-        
-    <User>
-                
-        <Nickname>perro</Nickname>
-            
-    </User>
-        
-    <User>
-                
-        <Nickname>perro</Nickname>
-            
-    </User>
-        
-    <User>
-                
-        <Nickname>perry</Nickname>
-            
-    </User>
-        
-    <User>
-                
-        <Nickname>perry</Nickname>
-            
-    </User>
-        
-    <User>
-                
         <Nickname>jaja</Nickname>
-            
     </User>
-        
     <User>
-                
-        <Nickname>jaja</Nickname>
-            
+        <Nickname>Isabel</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>bola</Nickname>
-            
+        <Nickname>dua</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>bola</Nickname>
-            
+        <Nickname>paloma</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>hol</Nickname>
-            
+        <Nickname>isarc</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>ala</Nickname>
-            
+        <Nickname>boo</Nickname>
     </User>
-        
     <User>
-                
-        <Nickname>ala</Nickname>
-            
+        <Nickname>vuela</Nickname>
     </User>
-        
-    
-    
+    <User>
+        <Nickname>jiji</Nickname>
+    </User>
+    <User>
+        <Nickname>numer</Nickname>
+    </User>
+    <User>
+        <Nickname>guty</Nickname>
+    <room>1</room></User>
 </Users>
