@@ -78,9 +78,9 @@ public class RoomController {
             mensajeTextField.setText(newValue);
         });
 
-
         //Load the users XML file and find the number of people in this room
         int numeroPersonasEnSala = obtenerNumeroPersonasEnSala(numeroSala);
+
 
         // Updates the view with the number of people in this room
         numPersonasLabel.setText(String.valueOf(numeroPersonasEnSala));
@@ -103,6 +103,7 @@ public class RoomController {
         // Asignar la lista de mensajes a la tabla
         messageTableView.setItems(messages);
 
+
     }
 
     public void setNickname(String nickname) {
@@ -111,6 +112,12 @@ public class RoomController {
 
     public void setNumeroSala(int numeroSala) {
         numeroSalaLabel.setText(String.valueOf(numeroSala));
+
+        // Actualiza el número de sala
+        this.numeroSala = numeroSala;
+
+        // Llama a actualizarUsuariosEnSala con el valor de numeroSala
+        actualizarUsuariosEnSala();
     }
 
     /**
@@ -164,8 +171,13 @@ public class RoomController {
         //Clear the TableView before loading new data
         usersTableView.getItems().clear();
 
-        //Reload usernames into the room
-        cargarNombresUsuariosEnSala(numeroSala);
+        // Get your nickname from the nicknameLabel
+        String tuNombre = nicknameLabel.getText();
+        int numeroSalaReal = Integer.parseInt(numeroSalaLabel.getText());
+        System.out.println("numero de sala real       :          "+numeroSalaReal);
+
+        // Reload usernames into the room with both sala number and your nickname
+        cargarNombresUsuariosEnSala(numeroSalaReal, tuNombre);
     }
 
     /**
@@ -173,34 +185,46 @@ public class RoomController {
      Load the user's nickname in the table on the right
      * @param numeroSala
      */
-    private void cargarNombresUsuariosEnSala(int numeroSala) {
+    /**
+     * Cargar el apodo del usuario en la tabla de la derecha
+     * @param numeroSala
+     */
+    private void cargarNombresUsuariosEnSala(int numeroSala, String tuNombre) {
         try {
-            //Upload the users XML file
+            // Upload the users XML file
             File file = new File(RUTA_XML_USUARIOS);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file);
 
-            // Get list of user nodes
-            NodeList userList = doc.getElementsByTagName("user");
+            // Get the root element of the XML, which is <Users>
+            Element root = doc.getDocumentElement();
+
+            // Get a list of all <User> elements under <Users>
+            NodeList userList = root.getElementsByTagName("User");
 
             // Create a list to store the names of users in the room
             List<String> usuariosEnSala = new ArrayList<>();
 
-            //Iterate through the user nodes to get the names of the users in the specified room
+            // Iterate through the <User> elements to get the names of users in the specified room
             for (int i = 0; i < userList.getLength(); i++) {
                 Node userNode = userList.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
 
-                    // Check if this room matches the specified room
-                    Node roomNode = userElement.getElementsByTagName("room").item(0);
-                    if (roomNode != null && roomNode.getTextContent() != null) {
-                        String salaUsuario = roomNode.getTextContent();
+                    // Obtener el elemento <room> del usuario actual
+                    Element roomElement = (Element) userElement.getElementsByTagName("room").item(0);
+
+                    // Verificar si esta sala coincide con la sala especificada
+                    if (roomElement != null && roomElement.getTextContent() != null) {
+                        String salaUsuario = roomElement.getTextContent();
                         if (Integer.parseInt(salaUsuario) == numeroSala) {
-                            Node nicknameNode = userElement.getElementsByTagName("nickname").item(0);
-                            if (nicknameNode != null && nicknameNode.getTextContent() != null) {
-                                String nombreUsuario = nicknameNode.getTextContent();
+                            // Obtener el elemento <Nickname> del usuario actual
+                            Element nicknameElement = (Element) userElement.getElementsByTagName("Nickname").item(0);
+
+                            // Verificar si el elemento <Nickname> existe y tiene contenido de texto
+                            if (nicknameElement != null && nicknameElement.getTextContent() != null) {
+                                String nombreUsuario = nicknameElement.getTextContent();
                                 usuariosEnSala.add(nombreUsuario);
                             }
                         }
@@ -208,10 +232,13 @@ public class RoomController {
                 }
             }
 
-            //Clear the TableView before adding the new data
+            // Agrega tu propio nombre si estás en la sala actual
+            usuariosEnSala.add(tuNombre);
+
+            // Clear the TableView before adding the new data
             usersTableView.getItems().clear();
 
-            //Add user names to the TableView
+            // Add user names to the TableView
             usersTableView.getItems().addAll(usuariosEnSala);
         } catch (Exception e) {
             e.printStackTrace();
