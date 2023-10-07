@@ -11,10 +11,10 @@
 
 <AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.controllers.RoomController">
 
-    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="714.0" layoutX="54.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="714.0" layoutX="54.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
 
-    <!-- Agrega un espacio para el mensaje de nickname en uso -->
-    <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
+   <!-- Agrega un espacio para el mensaje de nickname en uso -->
+   <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="118.0" layoutX="55.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="76.0" layoutX="179.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" width="874.0" />
    <Label fx:id="nicknameLabel" layoutX="523.0" layoutY="57.0" prefHeight="59.0" prefWidth="176.0" style="-fx-text-fill: #030303; -fx-font-size: 18px;" text="NICKNAME" textAlignment="CENTER">
@@ -23,7 +23,7 @@
       </font>
    </Label>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="859.0" layoutX="1190.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="236.0" />
-   <Button fx:id="buttonSend" layoutX="1211.0" layoutY="787.0" onAction="#SendMessageButton" prefHeight="76.0" prefWidth="195.0" style="-fx-background-color: #2da2bd;" stylesheets="@Styles/Login.css" text="ENVIAR">
+   <Button layoutX="1211.0" layoutY="787.0" prefHeight="76.0" prefWidth="195.0" style="-fx-background-color: #2da2bd;" stylesheets="@Styles/Login.css" text="ENVIAR" onAction="#enviarMensaje">
       <font>
          <Font name="Arial" size="24.0" />
       </font>
@@ -47,21 +47,21 @@
    </TableView>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2da2bd" height="118.0" layoutX="70.0" layoutY="753.0" stroke="BLACK" strokeType="INSIDE" width="1080.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="76.0" layoutX="104.0" layoutY="774.0" stroke="BLACK" strokeType="INSIDE" width="1024.0" />
-   <TextField fx:id="messageTextField" layoutX="120.0" layoutY="783.0" prefHeight="59.0" prefWidth="995.0" style="-fx-font-size: 10px;">
+   <TextField fx:id="mensajeTextField" layoutX="120.0" layoutY="783.0" prefHeight="59.0" prefWidth="995.0" style="-fx-font-size: 10px;">
       <font>
          <Font name="Arial Black" size="24.0" />
       </font>
    </TextField>
 
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2da2bd" height="534.0" layoutX="70.0" layoutY="198.0" stroke="BLACK" strokeType="INSIDE" width="1080.0" />
-   <TableView layoutX="102.0" layoutY="212.0" prefHeight="499.0" prefWidth="1024.0">
+   <TableView fx:id="messageTableView" layoutX="102.0" layoutY="212.0" prefHeight="499.0" prefWidth="1024.0">
       <columns>
-         <TableColumn prefWidth="143.0" text="Usuario" />
-         <TableColumn minWidth="0.0" prefWidth="753.0" text="Mensaje" />
-         <TableColumn minWidth="0.0" prefWidth="127.0" text="Hora" />
+         <TableColumn prefWidth="150.0" text="Nickname" fx:id="nicknameColumn" />
+         <TableColumn prefWidth="500.0" text="Mensaje" fx:id="messageColumn" />
+         <TableColumn prefWidth="200.0" text="Hora de Envío" fx:id="timestampColumn" />
       </columns>
    </TableView>
-   <Button fx:id="backButton" layoutX="88.0" layoutY="48.0" onAction="#retrocederAVistaAnterior" prefHeight="76.0" prefWidth="88.0" style="-fx-background-color: #83def2;" stylesheets="@Styles/Login.css" text="←">
+   <Button fx:id="backButton" layoutX="88.0" layoutY="48.0" prefHeight="76.0" prefWidth="88.0" style="-fx-background-color: #83def2;" stylesheets="@Styles/Login.css" text="←" onAction="#retrocederAVistaAnterior">
       <font>
          <Font name="Arial" size="24.0" />
       </font>

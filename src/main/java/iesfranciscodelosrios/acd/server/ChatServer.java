@@ -1,5 +1,6 @@
 package iesfranciscodelosrios.acd.server;
 
+import iesfranciscodelosrios.acd.models.Message;
 import iesfranciscodelosrios.acd.models.User;
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
@@ -28,7 +29,7 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "192.168.18.13";
+    String serverIp = "192.168.0.195";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */
@@ -99,6 +100,19 @@ public class ChatServer {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private List<Message> messages = new ArrayList<>();
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void broadcastMessage(Message message) {
+        for (ClientHandler clientHandler : clientHandlers) {
+            clientHandler.sendMessageToClient(message);
         }
     }
 

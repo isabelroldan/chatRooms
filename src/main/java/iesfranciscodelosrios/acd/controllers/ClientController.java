@@ -1,11 +1,15 @@
 package iesfranciscodelosrios.acd.controllers;
 
+import iesfranciscodelosrios.acd.models.Message;
 import iesfranciscodelosrios.acd.models.User;
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
+import javafx.application.Platform;
+import javafx.scene.control.TableView;
+
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -16,6 +20,17 @@ public class ClientController {
     private BufferedReader in;
     private Thread messageReceiverThread;
     private File xmlFile = new File("src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml");
+
+    private User clientUser; // Declarar la variable clientUser
+
+    private TableView<Message> messageTableView;
+    public ClientController() {
+
+    }
+
+    public ClientController(TableView<Message> messageTableView) {
+        this.messageTableView = messageTableView;
+    }
 
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
@@ -89,17 +104,46 @@ public class ClientController {
 
     // Cambiar por GetIP si se pudiera y da tiempo
     //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.168.18.13";
+    protected String serverIp = "192.168.0.195";
     protected int serverPort = 8081;
 
     public void connectToServer(User client) {
         try {
             Socket clientSocket = new Socket(serverIp, serverPort);
 
-            if(isUserLogedIn(client.getNickname()) == false) {
-                //Enviar la solicitud al servidor
+            if (isUserLogedIn(client.getNickname()) == false) {
+                // Enviar la solicitud al servidor
                 sendUserToServer(clientSocket, client);
-            }else{
+
+                // Iniciar el hilo para recibir mensajes del servidor
+                messageReceiverThread = new Thread(() -> {
+                    try {
+                        // Verificar si el socket está cerrado
+                        if (!clientSocket.isClosed()) {
+                            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                            // Asignar el objeto User del cliente actual a clientUser
+                            clientUser = client;
+                            while (true) {
+                                String serverMessage = in.readLine();
+                                if (serverMessage != null) {
+                                    // Agregar el mensaje al TableView (messageTableView) aquí
+                                    Platform.runLater(() -> {
+                                        // Crear un nuevo mensaje
+                                        Message receivedMessage = new Message(clientUser.getNickname(), serverMessage, null);
+
+                                        // Agregar el mensaje al TableView
+                                        messageTableView.getItems().add(receivedMessage);
+                                    });
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                messageReceiverThread.start();
+            } else {
                 disconnectFromServer();
                 System.out.println("Nickname en uso");
             }

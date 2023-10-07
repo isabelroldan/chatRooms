@@ -1,41 +1,28 @@
 package iesfranciscodelosrios.acd.models;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class Message {
-
+public class Message implements Serializable {
     private String nickname;
-    private String text;
-    private Date date;
+    private String content;
+    private LocalDateTime timestamp;
 
-    public Message(String nickname, String text, Date date) {
+    public Message(String nickname, String content, LocalDateTime timestamp) {
         this.nickname = nickname;
-        this.text = text;
-        this.date = date;
+        this.content = content;
+        this.timestamp = timestamp;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getContent() {
+        return content;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }
-
