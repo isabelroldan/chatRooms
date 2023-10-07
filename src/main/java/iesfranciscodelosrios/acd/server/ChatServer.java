@@ -1,5 +1,6 @@
 package iesfranciscodelosrios.acd.server;
 
+import iesfranciscodelosrios.acd.models.Message;
 import iesfranciscodelosrios.acd.models.User;
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
@@ -99,6 +100,19 @@ public class ChatServer {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private List<Message> messages = new ArrayList<>();
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void broadcastMessage(Message message) {
+        for (ClientHandler clientHandler : clientHandlers) {
+            clientHandler.sendMessageToClient(message);
         }
     }
 
