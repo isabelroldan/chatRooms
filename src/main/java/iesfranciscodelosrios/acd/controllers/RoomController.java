@@ -321,7 +321,9 @@ public class RoomController {
         messages.add(message);
     }
 
-
+    /**
+     * Método para envias mensajes al servidor
+     */
     @FXML
     public void enviarMensaje() {
         // Obtén el contenido del mensaje desde el TextField
