@@ -319,7 +319,11 @@ public class RoomController {
 
     // Método para agregar un mensaje a la lista de mensajes
     public void addMessage(Message message) {
+        // Agrega el mensaje a la lista de mensajes
         messages.add(message);
+
+        // Actualiza el TableView para mostrar el nuevo mensaje
+        messageTableView.getItems().add(message);
     }
 
 
@@ -345,5 +349,8 @@ public class RoomController {
 
         // Actualiza el TableView para mostrar el nuevo mensaje
         messageTableView.getItems().add(mensaje);
+
+        // Utiliza el ClientController para enviar el mensaje al servidor
+        clientController.sendMessageToServer(mensaje);
     }
 }

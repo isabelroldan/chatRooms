@@ -16,6 +16,9 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ClientController {
     private Socket clientSocket;
@@ -31,9 +34,9 @@ public class ClientController {
 
     }
 
-    public ClientController(TableView<Message> messageTableView) {
-        this.messageTableView = messageTableView;
-    }
+    //public ClientController(TableView<Message> messageTableView) {
+        //this.messageTableView = messageTableView;
+    //}
 
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
@@ -168,11 +171,11 @@ public class ClientController {
         }
     }
 
-    public void sendMessageToServer(String message) {
+    /*public void sendMessageToServer(String message) {
         if (out != null) {
             out.println(message);
         }
-    }
+    }*/
 
     public void disconnectFromServer() {
         try {
@@ -186,6 +189,70 @@ public class ClientController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private ScheduledExecutorService messageUpdater;
+
+    public ClientController(TableView<Message> messageTableView) {
+        this.messageTableView = messageTableView;
+        messageUpdater = Executors.newSingleThreadScheduledExecutor();
+        startMessageUpdater();
+    }
+
+    private void startMessageUpdater() {
+        messageUpdater.scheduleAtFixedRate(() -> {
+            // Obtener la lista de mensajes actualizada del servidor
+            List<Message> updatedMessages = getMessagesFromServer();
+
+            // Actualizar la tabla de mensajes en la interfaz de usuario
+            Platform.runLater(() -> {
+                messageTableView.getItems().clear();
+                messageTableView.getItems().addAll(updatedMessages);
+            });
+        }, 0, 1, TimeUnit.SECONDS); // Actualizar cada segundo
+    }
+
+    private List<Message> getMessagesFromServer() {
+        List<Message> messagesFromServer = new ArrayList<>();
+
+        try {
+            // Enviar una solicitud al servidor para obtener los mensajes.
+            out.println("GET_MESSAGES"); // Envía una cadena al servidor para solicitar los mensajes
+
+            // Configura un objeto ObjectInputStream para leer objetos serializados desde el servidor.
+            ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+
+            // Leer y deserializar los mensajes del servidor.
+            while (true) {
+                try {
+                    // Lee un objeto Message del servidor.
+                    Message message = (Message) objectInputStream.readObject();
+
+                    // Agrega el mensaje a la lista.
+                    messagesFromServer.add(message);
+                } catch (EOFException e) {
+                    // EOFException se lanza cuando no hay más objetos para leer.
+                    break; // Sal del bucle si no hay más mensajes.
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return messagesFromServer;
+    }
+
+    public void sendMessageToServer(Message message) {
+        if (clientSocket != null && out != null) {
+            try {
+                // Enviar el objeto Message al servidor
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                objectOutputStream.writeObject(message);
+                objectOutputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
