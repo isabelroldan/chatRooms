@@ -23,7 +23,7 @@
       </font>
    </Label>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="859.0" layoutX="1190.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="236.0" />
-   <Button layoutX="1211.0" layoutY="787.0" prefHeight="76.0" prefWidth="195.0" style="-fx-background-color: #2da2bd;" stylesheets="@Styles/Login.css" text="ENVIAR">
+   <Button layoutX="1211.0" layoutY="787.0" prefHeight="76.0" prefWidth="195.0" style="-fx-background-color: #2da2bd;" stylesheets="@Styles/Login.css" text="ENVIAR" onAction="#enviarMensaje">
       <font>
          <Font name="Arial" size="24.0" />
       </font>
@@ -54,10 +54,11 @@
    </TextField>
 
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2da2bd" height="534.0" layoutX="70.0" layoutY="198.0" stroke="BLACK" strokeType="INSIDE" width="1080.0" />
-   <TableView layoutX="102.0" layoutY="212.0" prefHeight="499.0" prefWidth="1024.0">
+   <TableView fx:id="messageTableView" layoutX="102.0" layoutY="212.0" prefHeight="499.0" prefWidth="1024.0">
       <columns>
-         <TableColumn prefWidth="556.0" text="C1" />
-         <TableColumn minWidth="0.0" prefWidth="688.0" text="C2" />
+         <TableColumn prefWidth="150.0" text="Nickname" fx:id="nicknameColumn" />
+         <TableColumn prefWidth="500.0" text="Mensaje" fx:id="messageColumn" />
+         <TableColumn prefWidth="200.0" text="Hora de Envío" fx:id="timestampColumn" />
       </columns>
    </TableView>
    <Button fx:id="backButton" layoutX="88.0" layoutY="48.0" prefHeight="76.0" prefWidth="88.0" style="-fx-background-color: #83def2;" stylesheets="@Styles/Login.css" text="←" onAction="#retrocederAVistaAnterior">

@@ -65,7 +65,7 @@ public class IndexController {
             users = c.loadUsersAndAddNewUser(client);
 
             //c.saveUserToXml(client);
-            c.saveUsersToXml(users);//Crear este metodo
+            //c.saveUsersToXml(users);//Crear este metodo
 
 
 

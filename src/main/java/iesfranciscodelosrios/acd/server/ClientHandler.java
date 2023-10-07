@@ -1,5 +1,6 @@
 package iesfranciscodelosrios.acd.server;
 
+import iesfranciscodelosrios.acd.models.Message;
 import iesfranciscodelosrios.acd.models.User;
 
 import java.io.*;
@@ -9,28 +10,28 @@ public class ClientHandler extends Thread  {
     private static final String XML_FILE_PATH = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
     File xmlFile = new File(XML_FILE_PATH);
 
+    private BufferedReader in; // Declarar la variable 'in' para lectura
+    private PrintWriter out; // Declarar la variable 'out' en la clase
+
     private Socket clientSocket;
     private ChatServer chatServer;
+    private ObjectInputStream objectInputStream; // Declarar la variable 'objectInputStream'
 
     public ClientHandler(Socket socket, ChatServer server) {
         this.clientSocket = socket;
         this.chatServer = server;
+        try {
+            this.out = new PrintWriter(socket.getOutputStream(), true);
+            this.objectInputStream = new ObjectInputStream(socket.getInputStream()); // Inicializar 'objectInputStream'
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // Inicializar 'in' para lectura
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
         try {
-            // Crear flujos de entrada y salida para comunicarse con el cliente
-            InputStream in = clientSocket.getInputStream();
-            OutputStream out = clientSocket.getOutputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(in);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-
-            //envío xml
-            if (xmlFile.exists()){
-                sendXmlFile(out);
-            } else {
-                
-            }
+            // ... (Código existente)
 
             // Recibir el objeto User del cliente
             User receivedUser = (User) objectInputStream.readObject();
@@ -39,6 +40,19 @@ public class ClientHandler extends Thread  {
             // Guardar el usuario en el archivo XML
             ChatServer.saveUserInXml(receivedUser);
 
+            // Escuchar y transmitir mensajes
+            while (true) {
+                String clientMessage = in.readLine();
+                if (clientMessage != null) {
+                    // Crear un objeto Message y agregarlo a la lista de mensajes en el servidor
+                    Message message = new Message(receivedUser.getNickname(), clientMessage, null);
+                    chatServer.addMessage(message);
+                    System.out.println("Mensaje recibido de " + receivedUser.getNickname() + ": " + clientMessage);
+
+                    // Enviar el mensaje a todos los clientes conectados
+                    chatServer.broadcastMessage(message);
+                }
+            }
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -64,6 +78,17 @@ public class ClientHandler extends Thread  {
             }
 
             System.out.println("Archivo XML enviado al cliente.");
+        }
+    }
+
+    public void sendMessageToClient(Message message) {
+        try {
+            // Aquí puedes usar el objeto PrintWriter 'out' para enviar el mensaje al cliente
+            if (out != null) {
+                out.println(message); // Supongo que el mensaje se puede representar como una cadena (toString).
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
