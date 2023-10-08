@@ -86,6 +86,7 @@ public class ClientHandler extends Thread  {
             // Aquí puedes usar el objeto PrintWriter 'out' para enviar el mensaje al cliente
             if (out != null) {
                 out.println(message); // Supongo que el mensaje se puede representar como una cadena (toString).
+                out.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();

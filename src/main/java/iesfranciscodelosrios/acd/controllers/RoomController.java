@@ -353,4 +353,20 @@ public class RoomController {
         // Utiliza el ClientController para enviar el mensaje al servidor
         clientController.sendMessageToServer(mensaje);
     }
+
+
+
+
+
+    public void recibirMensaje(Message message) {
+        // Agrega el mensaje recibido a la lista de mensajes
+        messages.add(message);
+
+        // Actualiza el TableView para mostrar el nuevo mensaje
+        messageTableView.getItems().add(message);
+    }
+
+
+
+
 }
