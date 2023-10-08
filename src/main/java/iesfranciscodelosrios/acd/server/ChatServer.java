@@ -6,7 +6,6 @@ import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -30,7 +29,7 @@ public class ChatServer {
     /**
      * La dirección IP del servidor.
      */
-    String serverIp = "192.168.0.195";
+    String serverIp = "192.168.18.13";
     /**
      * El puerto en el que el servidor escuchará las conexiones entrantes.
      */

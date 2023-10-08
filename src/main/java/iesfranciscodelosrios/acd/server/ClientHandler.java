@@ -31,29 +31,34 @@ public class ClientHandler extends Thread  {
 
     public void run() {
         try {
-            // ... (Código existente)
+            // Recibir el objeto del cliente
+            Object receivedObject = objectInputStream.readObject();
 
-            // Recibir el objeto User del cliente
-            User receivedUser = (User) objectInputStream.readObject();
-            System.out.println("Usuario recibido del cliente: " + receivedUser);
+            // Distinguir entre objetos Message y User
+            String receivedObjectType = receivedObject.getClass().getName();
+            switch (receivedObjectType) {
+                case "iesfranciscodelosrios.acd.models.Message":
+                    Message clientMessage = (Message) receivedObject;
+                    System.out.println("Client message received  \n" + clientMessage.getNickname()+":"+clientMessage.getContent());
+                    if (clientMessage != null) {
+                        // Crear un objeto Message y agregarlo a la lista de mensajes en el servidor
+                        chatServer.addMessage(clientMessage);
+                        System.out.println("Mensaje recibido: " + clientMessage);
 
-            // Guardar el usuario en el archivo XML
-            ChatServer.saveUserInXml(receivedUser);
+                        // Enviar el mensaje a todos los clientes conectados
+                        chatServer.broadcastMessage(clientMessage);
+                    }
+                    break;
+                case "iesfranciscodelosrios.acd.models.User":
+                    User receivedUser = (User) receivedObject;
+                    System.out.println("Usuario recibido del cliente: " + receivedUser);
 
-            // Escuchar y transmitir mensajes
-            while (true) {
-                String clientMessage = in.readLine();
-                if (clientMessage != null) {
-                    // Crear un objeto Message y agregarlo a la lista de mensajes en el servidor
-                    Message message = new Message(receivedUser.getNickname(), clientMessage, null);
-                    chatServer.addMessage(message);
-                    System.out.println("Mensaje recibido de " + receivedUser.getNickname() + ": " + clientMessage);
-
-                    // Enviar el mensaje a todos los clientes conectados
-                    chatServer.broadcastMessage(message);
-                }
+                    // Guardar el usuario en el archivo XML
+                    ChatServer.saveUserInXml(receivedUser);
+                    break;
+                default:
+                    System.out.println("Objeto recibido del cliente desconocido.");
             }
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

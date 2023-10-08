@@ -1,7 +1,6 @@
 package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.Message;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -29,6 +27,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ public class RoomController {
     private TableView<String> usersTableView;
     @FXML
     private Button backButton; // Agrega el botón
-
     @FXML
     private TableView<Message> messageTableView;
     @FXML
@@ -61,6 +59,8 @@ public class RoomController {
     private TableColumn<Message, String> timestampColumn;
 
     private ObservableList<Message> messages = FXCollections.observableArrayList();
+
+    private Socket socket = new Socket();
 
     private int numeroSala; // Agrega este atributo
     private static final String RUTA_XML_USUARIOS = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
@@ -102,8 +102,6 @@ public class RoomController {
 
         // Asignar la lista de mensajes a la tabla
         messageTableView.setItems(messages);
-
-
     }
 
     public void setNickname(String nickname) {
@@ -316,7 +314,6 @@ public class RoomController {
         }
     }
 
-
     // Método para agregar un mensaje a la lista de mensajes
     public void addMessage(Message message) {
         // Agrega el mensaje a la lista de mensajes
@@ -326,7 +323,9 @@ public class RoomController {
         messageTableView.getItems().add(message);
     }
 
-
+    /**
+     * Método para enviar mensajes al servidor
+     */
     @FXML
     public void enviarMensaje() {
         // Obtén el contenido del mensaje desde el TextField
@@ -341,9 +340,6 @@ public class RoomController {
         // Crea un objeto Message con los datos
         Message mensaje = new Message(nicknameUsuario, contenidoMensaje, horaEnvio);
 
-        // Agrega el mensaje a la lista de mensajes
-        //messages.add(mensaje);
-
         // Limpia el TextField después de enviar el mensaje
         mensajeTextField.clear();
 
@@ -353,6 +349,7 @@ public class RoomController {
         // Utiliza el ClientController para enviar el mensaje al servidor
         clientController.sendMessageToServer(mensaje);
     }
+
 
 
 
@@ -370,3 +367,4 @@ public class RoomController {
 
 
 }
+

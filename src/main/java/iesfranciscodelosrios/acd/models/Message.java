@@ -2,7 +2,6 @@ package iesfranciscodelosrios.acd.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Message implements Serializable {
     private String nickname;
@@ -27,4 +26,3 @@ public class Message implements Serializable {
         return timestamp;
     }
 }
-

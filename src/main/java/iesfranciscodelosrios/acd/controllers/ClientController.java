@@ -2,7 +2,6 @@ package iesfranciscodelosrios.acd.controllers;
 
 import iesfranciscodelosrios.acd.models.Message;
 import iesfranciscodelosrios.acd.models.User;
-
 import iesfranciscodelosrios.acd.models.Users;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -10,18 +9,30 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import javafx.application.Platform;
 import javafx.scene.control.TableView;
-
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ClientController {
-    private Socket clientSocket;
+    // Cambiar por GetIP si se pudiera y da tiempo
+    //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
+    protected String serverIp = "192.168.18.13";
+    protected int serverPort = 8081;
+
+    Socket clientSocket;
+
+    {
+        try {
+            clientSocket = new Socket(serverIp, serverPort);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PrintWriter out;
     private BufferedReader in;
     private Thread messageReceiverThread;
@@ -30,13 +41,9 @@ public class ClientController {
     private User clientUser; // Declarar la variable clientUser
 
     private TableView<Message> messageTableView;
+
     public ClientController() {
-
     }
-
-    //public ClientController(TableView<Message> messageTableView) {
-        //this.messageTableView = messageTableView;
-    //}
 
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
@@ -56,7 +63,7 @@ public class ClientController {
                 } else {
                     System.out.println("La lista está vacía");
                 }
-            } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +100,7 @@ public class ClientController {
 
     /**
      * Method that save the user provided to an XML file
+     *
      * @param users
      */
     public void saveUsersToXml(Users users) {
@@ -108,14 +116,9 @@ public class ClientController {
         }
     }
 
-    // Cambiar por GetIP si se pudiera y da tiempo
-    //Se establece la dirección IP y el puerto del servidor al que se conectará el cliente
-    protected String serverIp = "192.168.0.195";
-    protected int serverPort = 8081;
-
     public void connectToServer(User client) {
         try {
-            Socket clientSocket = new Socket(serverIp, serverPort);
+
 
             if (isUserLogedIn(client.getNickname()) == false) {
                 // Enviar la solicitud al servidor
@@ -158,10 +161,10 @@ public class ClientController {
         }
     }
 
-    private void sendUserToServer(Socket socket,User user) {
-         try {
+    private void sendUserToServer(Socket socket, User user) {
+        try {
             // Enviar el objeto User al servidor
-           try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
+            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
                 objectOutputStream.writeObject(user);
                 objectOutputStream.flush();
                 System.out.println("User pushed to server to save it in the XML file");
@@ -239,17 +242,17 @@ public class ClientController {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return messagesFromServer;
     }
 
     public void sendMessageToServer(Message message) {
-        if (clientSocket != null && out != null) {
+        if (clientSocket != null) {
             try {
                 // Enviar el objeto Message al servidor
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                 objectOutputStream.writeObject(message);
                 objectOutputStream.flush();
+                System.out.println("Message sent to server");
             } catch (IOException e) {
                 e.printStackTrace();
             }
