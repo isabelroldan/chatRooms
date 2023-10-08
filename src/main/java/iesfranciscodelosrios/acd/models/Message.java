@@ -25,4 +25,13 @@ public class Message implements Serializable {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "nickname='" + nickname + '\'' +
+                ", content='" + content + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

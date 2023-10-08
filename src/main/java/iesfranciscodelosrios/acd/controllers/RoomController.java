@@ -70,7 +70,7 @@ public class RoomController {
     private ScheduledExecutorService executorService;
 
     // Cuando creas una instancia de ClientController, pasa la referencia del TableView
-    ClientController clientController = new ClientController(messageTableView);
+    ClientController clientController = new ClientController();
 
     public void initialize() {
         mensajeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -348,6 +348,8 @@ public class RoomController {
 
         // Utiliza el ClientController para enviar el mensaje al servidor
         clientController.sendMessageToServer(mensaje);
+
+        clientController.getMessageFromServer();
     }
 
 
