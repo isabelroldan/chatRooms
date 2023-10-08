@@ -118,8 +118,6 @@ public class ClientController {
 
     public void connectToServer(User client) {
         try {
-
-
             if (isUserLogedIn(client.getNickname()) == false) {
                 // Enviar la solicitud al servidor
                 sendUserToServer(clientSocket, client);
@@ -166,7 +164,8 @@ public class ClientController {
             // Enviar el objeto User al servidor
             try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
                 objectOutputStream.writeObject(user);
-                objectOutputStream.flush();
+                objectOutputStream.flush(); //Hola
+                //holaa
                 System.out.println("User pushed to server to save it in the XML file");
             }
         } catch (IOException e) {
@@ -195,34 +194,10 @@ public class ClientController {
         }
     }
 
-    private ScheduledExecutorService messageUpdater;
-
-    public ClientController(TableView<Message> messageTableView) {
-        this.messageTableView = messageTableView;
-        messageUpdater = Executors.newSingleThreadScheduledExecutor();
-        startMessageUpdater();
-    }
-
-    private void startMessageUpdater() {
-        messageUpdater.scheduleAtFixedRate(() -> {
-            // Obtener la lista de mensajes actualizada del servidor
-            List<Message> updatedMessages = getMessagesFromServer();
-
-            // Actualizar la tabla de mensajes en la interfaz de usuario
-            Platform.runLater(() -> {
-                messageTableView.getItems().clear();
-                messageTableView.getItems().addAll(updatedMessages);
-            });
-        }, 0, 1, TimeUnit.SECONDS); // Actualizar cada segundo
-    }
-
-    private List<Message> getMessagesFromServer() {
-        List<Message> messagesFromServer = new ArrayList<>();
+    public Message getMessageFromServer() {
+        Message message = null;
 
         try {
-            // Enviar una solicitud al servidor para obtener los mensajes.
-            out.println("GET_MESSAGES"); // Envía una cadena al servidor para solicitar los mensajes
-
             // Configura un objeto ObjectInputStream para leer objetos serializados desde el servidor.
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
@@ -230,19 +205,16 @@ public class ClientController {
             while (true) {
                 try {
                     // Lee un objeto Message del servidor.
-                    Message message = (Message) objectInputStream.readObject();
-
-                    // Agrega el mensaje a la lista.
-                    messagesFromServer.add(message);
+                    message = (Message) objectInputStream.readObject();
+                    System.out.println("Mensaje recibido");
                 } catch (EOFException e) {
                     // EOFException se lanza cuando no hay más objetos para leer.
-                    break; // Sal del bucle si no hay más mensajes.
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return messagesFromServer;
+        return message;
     }
 
     public void sendMessageToServer(Message message) {
