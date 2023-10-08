@@ -104,10 +104,20 @@ public class RoomController {
         messageTableView.setItems(messages);
     }
 
+    /**
+     * Sets the nickname for the user and updates the UI.
+     *
+     * @param nickname The new nickname to set.
+     */
     public void setNickname(String nickname) {
         nicknameLabel.setText(nickname);
     }
 
+    /**
+     * Sets the room number and updates the UI.
+     *
+     * @param numeroSala The new room number to set.
+     */
     public void setNumeroSala(int numeroSala) {
         numeroSalaLabel.setText(String.valueOf(numeroSala));
 
@@ -314,7 +324,11 @@ public class RoomController {
         }
     }
 
-    // Método para agregar un mensaje a la lista de mensajes
+    /**
+     * Adds a message to the list of messages and updates the TableView to display the new message.
+     *
+     * @param message The message to be added.
+     */
     public void addMessage(Message message) {
         // Agrega el mensaje a la lista de mensajes
         messages.add(message);
@@ -354,7 +368,11 @@ public class RoomController {
 
 
 
-
+    /**
+     * Receives a message and adds it to the list of messages. It also updates the TableView to display the new message.
+     *
+     * @param message The message to be received and added.
+     */
     public void recibirMensaje(Message message) {
         // Agrega el mensaje recibido a la lista de mensajes
         messages.add(message);

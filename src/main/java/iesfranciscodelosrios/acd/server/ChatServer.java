@@ -40,7 +40,11 @@ public class ChatServer {
     // Atributo estático para almacenar la única instancia de ChatServer
     private static ChatServer instance;
 
-    // Método estático para obtener la instancia única de ChatServer
+    /**
+     * Gets the instance of the ChatServer class. If no instance exists, a new instance is created.
+     *
+     * @return The ChatServer instance.
+     */
     public static ChatServer getInstance() {
         if (instance == null) {
             instance = new ChatServer();
@@ -48,6 +52,11 @@ public class ChatServer {
         return instance;
     }
 
+    /**
+     * Constructs a new instance of the ChatServer class. Initializes a server socket to listen on the specified port (serverPort).
+     * Accepts incoming client connections in an infinite loop, creating a new ClientHandler thread or class for each connection
+     * to handle communication with the client. This allows multiple clients to connect and communicate simultaneously.
+     */
     public ChatServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort); // Puerto del servidor. Se crea un socket de servidor (ServerSocket) que escucha en el puerto serverPort especificado
@@ -73,6 +82,12 @@ public class ChatServer {
         }
     }
 
+    /**
+     * Saves a User object to the XML file of users. If the file exists, it loads the existing users and adds the new user to the list.
+     * If the file doesn't exist, it creates a new list of users and adds the new user to it, then saves the updated list to the XML file.
+     *
+     * @param user The User object to be saved to the XML file.
+     */
     public static void saveUserInXml(User user) {
         try {
             File file = new File(XML_FILE_PATH);
@@ -103,16 +118,37 @@ public class ChatServer {
         }
     }
 
+    /**
+     * A thread-safe list of Message objects used to store and manage chat messages.
+     */
     private List<Message> messages = new CopyOnWriteArrayList<>();
 
+    /**
+     * Adds a Message object to the synchronized list of messages. This method is synchronized to ensure thread safety
+     * when adding messages to the list.
+     *
+     * @param message The Message object to be added to the list.
+     */
     public synchronized void addMessage(Message message) {
         messages.add(message);
     }
 
+    /**
+     * Gets the synchronized list of Message objects containing chat messages. This method is synchronized to ensure thread safety
+     * when accessing the list of messages.
+     *
+     * @return The synchronized list of Message objects containing chat messages.
+     */
     public synchronized List<Message> getMessages() {
         return messages;
     }
 
+    /**
+     * Broadcasts a Message object to all connected clients. This method is synchronized to ensure thread safety
+     * when adding the message to the server's list of messages and sending it to clients.
+     *
+     * @param message The Message object to be broadcasted to all clients.
+     */
     public synchronized void broadcastMessage(Message message) {
         messages.add(message); // Agrega el mensaje a la lista de mensajes en el servidor
 

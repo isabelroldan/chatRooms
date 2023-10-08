@@ -7,16 +7,47 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler extends Thread  {
+    /**
+     * The file path to the XML file that stores user data.
+     */
     private static final String XML_FILE_PATH = "src/main/resources/iesfranciscodelosrios/acd/Xmls/Users.xml";
+
+    /**
+     * Represents the XML file that stores user data.
+     */
     File xmlFile = new File(XML_FILE_PATH);
 
+    /**
+     * A BufferedReader used for reading data from an input source.
+     */
     private BufferedReader in; // Declarar la variable 'in' para lectura
+
+    /**
+     * A PrintWriter used for writing data to an output destination.
+     */
     private PrintWriter out; // Declarar la variable 'out' en la clase
 
+    /**
+     * A Socket object representing the client's socket connection.
+     */
     private Socket clientSocket;
+
+    /**
+     * A reference to the ChatServer instance associated with this client handler.
+     */
     private ChatServer chatServer;
+
+    /**
+     * An ObjectInputStream used for deserializing objects received from the client.
+     */
     private ObjectInputStream objectInputStream; // Declarar la variable 'objectInputStream'
 
+    /**
+     * Initializes a new instance of the ClientHandler class with the provided Socket and ChatServer references.
+     *
+     * @param socket The Socket representing the client's socket connection.
+     * @param server A reference to the ChatServer instance associated with this client handler.
+     */
     public ClientHandler(Socket socket, ChatServer server) {
         this.clientSocket = socket;
         this.chatServer = server;
@@ -29,6 +60,10 @@ public class ClientHandler extends Thread  {
         }
     }
 
+    /**
+     * Overrides the run method of the Thread class to handle communication with the client.
+     * Receives objects from the client and processes them based on their type (Message or User).
+     */
     public void run() {
         try {
             // Recibir el objeto del cliente
@@ -64,6 +99,12 @@ public class ClientHandler extends Thread  {
         }
     }
 
+    /**
+     * Sends an XML file to the specified OutputStream.
+     *
+     * @param out The OutputStream to which the XML file will be sent.
+     * @throws IOException If an I/O error occurs while sending the file.
+     */
     private static void sendXmlFile(OutputStream out) throws IOException {
         File xmlFile = new File(XML_FILE_PATH);
         if (!xmlFile.exists()) {
@@ -86,6 +127,11 @@ public class ClientHandler extends Thread  {
         }
     }
 
+    /**
+     * Sends a message to the client using the PrintWriter 'out'.
+     *
+     * @param message The Message object to be sent to the client.
+     */
     public void sendMessageToClient(Message message) {
         try {
             // Aquí puedes usar el objeto PrintWriter 'out' para enviar el mensaje al cliente
