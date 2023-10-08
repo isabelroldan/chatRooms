@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Users>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Users>
     <User>
         <Nickname>buu</Nickname>
     </User>
+    <User>
+        <Nickname>Wino</Nickname>
+    <room>1</room></User>
+    <User>
+        <Nickname>Isaac</Nickname>
+    <room>1</room></User>
 </Users>
