@@ -1,39 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Users>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Users>
     <User>
-        <Nickname>nick</Nickname>
+        <Nickname>buu</Nickname>
     </User>
     <User>
-        <Nickname>dos</Nickname>
-    </User>
+        <Nickname>Wino</Nickname>
+    <room>1</room></User>
     <User>
-        <Nickname>kfgjdhl</Nickname>
-    </User>
-    <User>
-        <Nickname>dfdfd</Nickname>
-    </User>
-    <User>
-        <Nickname>rgtrfhrtdfhdrf</Nickname>
-    </User>
-    <User>
-        <Nickname>hooney</Nickname>
-    </User>
-    <User>
-        <Nickname>hjgh</Nickname>
-    </User>
-    <User>
-        <Nickname>bbb</Nickname>
-    </User>
-    <User>
-        <Nickname>Francis</Nickname>
-    </User>
-    <User>
-        <Nickname>Francis2</Nickname>
-    </User>
-    <User>
-        <Nickname>isarc98</Nickname>
-    </User>
-    <User>
-        <Nickname>Francis3</Nickname>
-    </User>
+        <Nickname>Isaac</Nickname>
+    <room>1</room></User>
 </Users>

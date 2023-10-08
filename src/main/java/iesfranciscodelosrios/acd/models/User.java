@@ -1,9 +1,7 @@
 package iesfranciscodelosrios.acd.models;
 
 import jakarta.xml.bind.annotation.*;
-
 import java.io.Serializable;
-import java.util.List;
 
 
 @XmlRootElement(name = "User")

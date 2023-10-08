@@ -11,10 +11,10 @@
 
 <AnchorPane id="background" prefHeight="900.0" prefWidth="1440.0" stylesheets="@Styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="iesfranciscodelosrios.acd.controllers.RoomController">
 
-    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="714.0" layoutX="54.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="714.0" layoutX="54.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
 
-    <!-- Agrega un espacio para el mensaje de nickname en uso -->
-    <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
+   <!-- Agrega un espacio para el mensaje de nickname en uso -->
+   <Label fx:id="nicknameInUseLabel" layoutX="582.0" layoutY="440.0" prefHeight="26.0" prefWidth="277.0" style="-fx-text-fill: red; -fx-font-size: 14px;" visible="false" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#83def2" height="118.0" layoutX="55.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="1114.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="76.0" layoutX="179.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" width="874.0" />
    <Label fx:id="nicknameLabel" layoutX="523.0" layoutY="57.0" prefHeight="59.0" prefWidth="176.0" style="-fx-text-fill: #030303; -fx-font-size: 18px;" text="NICKNAME" textAlignment="CENTER">
