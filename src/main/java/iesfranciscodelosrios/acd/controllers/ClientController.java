@@ -45,6 +45,13 @@ public class ClientController {
     public ClientController() {
     }
 
+    /**
+     * Checks if a user with the given nickname is logged in.
+     *
+     * @param nickname The nickname of the user to check.
+     * @return True if a user with the given nickname is logged in; otherwise, false.
+     * @throws IOException If there is an error while reading user data from the XML file.
+     */
     public boolean isUserLogedIn(String nickname) throws IOException {
         boolean result = false;
         try {
@@ -70,6 +77,12 @@ public class ClientController {
         return result;
     }
 
+    /**
+     * Loads existing user data from an XML file, adds a new user, and returns the updated user list.
+     *
+     * @param newUser The user to be added.
+     * @return An updated Users object containing the new user and existing users.
+     */
     public Users loadUsersAndAddNewUser(User newUser) {
         Users updatedUsers = new Users();
 
@@ -116,6 +129,11 @@ public class ClientController {
         }
     }
 
+    /**
+     * Connects to the server with the specified client user and starts a thread to receive messages from the server.
+     *
+     * @param client The client user to connect with.
+     */
     public void connectToServer(User client) {
         try {
             if (isUserLogedIn(client.getNickname()) == false) {
@@ -159,6 +177,12 @@ public class ClientController {
         }
     }
 
+    /**
+     * Sends the User object to the server for saving it in the XML file.
+     *
+     * @param socket The socket used for communication with the server.
+     * @param user   The User object to send to the server.
+     */
     private void sendUserToServer(Socket socket, User user) {
         try {
             // Enviar el objeto User al servidor
@@ -179,6 +203,9 @@ public class ClientController {
         }
     }*/
 
+    /**
+     * Disconnects the client from the server by interrupting the messageReceiverThread, closing input and output streams, and closing the clientSocket.
+     */
     public void disconnectFromServer() {
         try {
             if (messageReceiverThread != null && messageReceiverThread.isAlive()) {
@@ -194,8 +221,47 @@ public class ClientController {
         }
     }
 
+
+    private ScheduledExecutorService messageUpdater;
+
+    /**
+     * Constructs a new instance of the ClientController with a reference to the messageTableView.
+     *
+     * @param messageTableView The TableView used for displaying messages in the user interface.
+     */
+    public ClientController(TableView<Message> messageTableView) {
+        this.messageTableView = messageTableView;
+        messageUpdater = Executors.newSingleThreadScheduledExecutor();
+        startMessageUpdater();
+    }
+
+    /**
+     * Starts a scheduled task to periodically update the message table view with messages from the server.
+     */
+    private void startMessageUpdater() {
+        messageUpdater.scheduleAtFixedRate(() -> {
+            // Obtener la lista de mensajes actualizada del servidor
+            List<Message> updatedMessages = getMessagesFromServer();
+
+            // Actualizar la tabla de mensajes en la interfaz de usuario
+            Platform.runLater(() -> {
+                messageTableView.getItems().clear();
+                messageTableView.getItems().addAll(updatedMessages);
+            });
+        }, 0, 1, TimeUnit.SECONDS); // Actualizar cada segundo
+    }
+
+    /**
+     * Requests messages from the server, receives and deserializes them, and returns the list of messages received from the server.
+     *
+     * @return A list of messages received from the server.
+     */
+    private List<Message> getMessagesFromServer() {
+        List<Message> messagesFromServer = new ArrayList<>();
+
     public Message getMessageFromServer() {
         Message message = null;
+
 
         try {
             // Configura un objeto ObjectInputStream para leer objetos serializados desde el servidor.
@@ -217,6 +283,11 @@ public class ClientController {
         return message;
     }
 
+    /**
+     * Sends a message to the server by serializing and sending the Message object to the server's output stream.
+     *
+     * @param message The message to be sent to the server.
+     */
     public void sendMessageToServer(Message message) {
         if (clientSocket != null) {
             try {

@@ -100,7 +100,12 @@ public class BoardController {
         nicknameLabel.setText(nickname);
     }
 
-    // Method to change the color of the rectangle when clicked
+    /**
+     * Changes the color of a rectangle when it is clicked. If a different rectangle is clicked, it selects it and deselects the previously selected rectangle.
+     * If the already selected rectangle is clicked again, it deselects it.
+     *
+     * @param event The MouseEvent that triggers this action.
+     */
     private void cambiarColorRectangulo(MouseEvent event) {
         Rectangle rectangulo = (Rectangle) event.getSource();
 
@@ -344,6 +349,9 @@ public class BoardController {
         }
     }
 
+    /**
+     * Deletes the current user from the XML file of users and closes the current window.
+     */
     @FXML
     private void eliminarUsuario() {
         // Obtén el nickname del usuario actual
@@ -362,6 +370,11 @@ public class BoardController {
         }
     }
 
+    /**
+     * Removes a user with the specified nickname from the XML file of users.
+     *
+     * @param nickname The nickname of the user to be removed.
+     */
     private void eliminarUsuarioDelXML(String nickname) {
         try {
             // Cargar el archivo XML de usuarios
