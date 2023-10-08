@@ -136,8 +136,6 @@ public class ClientController {
      */
     public void connectToServer(User client) {
         try {
-
-
             if (isUserLogedIn(client.getNickname()) == false) {
                 // Enviar la solicitud al servidor
                 sendUserToServer(clientSocket, client);
@@ -190,7 +188,8 @@ public class ClientController {
             // Enviar el objeto User al servidor
             try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
                 objectOutputStream.writeObject(user);
-                objectOutputStream.flush();
+                objectOutputStream.flush(); //Hola
+                //holaa
                 System.out.println("User pushed to server to save it in the XML file");
             }
         } catch (IOException e) {
@@ -221,6 +220,7 @@ public class ClientController {
             e.printStackTrace();
         }
     }
+
 
     private ScheduledExecutorService messageUpdater;
 
@@ -259,10 +259,11 @@ public class ClientController {
     private List<Message> getMessagesFromServer() {
         List<Message> messagesFromServer = new ArrayList<>();
 
-        try {
-            // Enviar una solicitud al servidor para obtener los mensajes.
-            out.println("GET_MESSAGES"); // Envía una cadena al servidor para solicitar los mensajes
+    public Message getMessageFromServer() {
+        Message message = null;
 
+
+        try {
             // Configura un objeto ObjectInputStream para leer objetos serializados desde el servidor.
             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
@@ -270,19 +271,16 @@ public class ClientController {
             while (true) {
                 try {
                     // Lee un objeto Message del servidor.
-                    Message message = (Message) objectInputStream.readObject();
-
-                    // Agrega el mensaje a la lista.
-                    messagesFromServer.add(message);
+                    message = (Message) objectInputStream.readObject();
+                    System.out.println("Mensaje recibido");
                 } catch (EOFException e) {
                     // EOFException se lanza cuando no hay más objetos para leer.
-                    break; // Sal del bucle si no hay más mensajes.
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return messagesFromServer;
+        return message;
     }
 
     /**
